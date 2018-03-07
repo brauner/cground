@@ -20,6 +20,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
+
 #ifndef __LXC_NL_H
 #define __LXC_NL_H
 
@@ -238,6 +239,7 @@ struct nlmsg *nlmsg_alloc_reserve(size_t size);
  * Returns a pointer to newly reserved room or NULL
  */
 void *nlmsg_reserve(struct nlmsg *nlmsg, size_t len);
+void *nlmsg_reserve_unaligned(struct nlmsg *nlmsg, size_t len);
 
 /*
  * nlmsg_free : free a previously allocate message

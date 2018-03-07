@@ -1,17 +1,18 @@
 #define _GNU_SOURCE
+#include <asm/types.h>
 #include <errno.h>
 #include <fcntl.h>
+#include <linux/netlink.h>
+#include <linux/rtnetlink.h>
 #include <sched.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
-#include <asm/types.h>
-#include <linux/netlink.h>
-#include <linux/rtnetlink.h>
 #include <sys/ioctl.h>
 #include <sys/socket.h>
 #include <sys/stat.h>
+#include <sys/wait.h>
+#include <unistd.h>
 
 #include "nl.h"
 
@@ -115,31 +116,35 @@ out:
 	return ret;
 }
 
-int main(int argc, char *argv[])
+static int inject_uevent_by_pid(pid_t pid)
 {
 	int ret;
-	size_t umsg_len;
 	char *arg_umsg, *umsg;
-	pid_t arg_pid, self_pid;
+	pid_t self_pid;
 	struct nl_handler nlh;
 	int netns_fd = -1, userns_fd = -1;
+	char *uevent[] = {
+	    "add@/dev/tty63",
+	    "ACTION=add",
+	    "DEVNAME=/dev/tty63",
+	    "DEVPATH=/devices/virtual/tty/tty63",
+	    "SUBSYSTEM=tty",
+	    "MAJOR=4",
+	    "MINOR=63",
+	    "SEQNUM=3716",
+	    NULL,
+	};
 	struct nlmsg *nlmsg = NULL;
-
-	if (argc < 3) {
-		fprintf(stderr, "Missing arguments\n");
-		exit(EXIT_FAILURE);
-	}
 
 	/* Check whether we need to attach to any namespaces before opening the
 	 * netlink socket.
 	 */
-	arg_pid = atoi(argv[1]);
 	self_pid = getpid();
-	netns_fd = pids_in_same_namespace(self_pid, arg_pid, "net");
+	netns_fd = pids_in_same_namespace(self_pid, pid, "net");
 	if (netns_fd == -1) {
 		fprintf(stderr, "Failed to determine whether we are in the "
 				"same network namespace\n");
-		exit(EXIT_FAILURE);
+		return -1;
 	}
 
 	if (netns_fd >= 0) {
@@ -150,7 +155,7 @@ int main(int argc, char *argv[])
 			close(netns_fd);
 			fprintf(stderr, "%s - Failed to preserve current user "
 					"namespace \n", strerror(errno));
-			exit(EXIT_FAILURE);
+			return -1;
 		}
 
 		userns_fd = ioctl(netns_fd, NS_GET_USERNS);
@@ -160,7 +165,7 @@ int main(int argc, char *argv[])
 			fprintf(stderr, "%s - Failed to get owning user "
 					"namespace of network namespace\n",
 					strerror(errno));
-			exit(EXIT_FAILURE);
+			return -1;
 		}
 
 		ret = fds_in_same_namespace(current_userns_fd, userns_fd);
@@ -170,7 +175,7 @@ int main(int argc, char *argv[])
 			close(userns_fd);
 			fprintf(stderr, "Failed to determine whether fds refer "
 					"to the same user namespace\n");
-			exit(EXIT_FAILURE);
+			return -1;
 		}
 
 		if (ret == -EINVAL) {
@@ -187,7 +192,28 @@ int main(int argc, char *argv[])
 					"namespace\n", strerror(errno));
 			if (netns_fd >= 0)
 				close(netns_fd);
-			exit(EXIT_FAILURE);
+			return -1;
+		}
+
+		fprintf(stderr, "Attached to user namespace of %d\n", pid);
+
+		/* udev will only accept messages from uid 0 so become root in
+		 * the user namespace we attached to.
+		 */
+		ret = setgid(0);
+		if (ret < 0) {
+			fprintf(stderr, "Failed to switch to gid 0\n");
+			if (netns_fd >= 0)
+				close(netns_fd);
+			return -1;
+		}
+
+		ret = setuid(0);
+		if (ret < 0) {
+			fprintf(stderr, "Failed to switch to uid 0\n");
+			if (netns_fd >= 0)
+				close(netns_fd);
+			return -1;
 		}
 	}
 
@@ -199,48 +225,102 @@ int main(int argc, char *argv[])
 					"namespace\n", strerror(errno));
 			if (userns_fd >= 0)
 				close(userns_fd);
-			exit(EXIT_FAILURE);
+			return -1;
 		}
+		fprintf(stderr, "Attached to network namespace of %d\n", pid);
 	}
 
 	ret = netlink_open(&nlh, NETLINK_KOBJECT_UEVENT, 0);
 	if (ret < 0) {
 		fprintf(stderr, "Failed to open netlink uevent socket\n");
-		exit(EXIT_FAILURE);
+		return -1;
 	}
 
 	nlmsg = nlmsg_alloc(NLMSG_GOOD_SIZE);
 	if (!nlmsg) {
 		printf("Failed to allocate memory\n");
-		ret = EXIT_FAILURE;
+		ret = -1;
 		goto on_error;
 	}
 
 	nlmsg->nlmsghdr->nlmsg_flags = NLM_F_ACK | NLM_F_REQUEST;
 	nlmsg->nlmsghdr->nlmsg_type = UEVENT_SEND;
+	nlmsg->nlmsghdr->nlmsg_pid = 0;
 
-	arg_umsg = argv[2];
-	umsg_len = strlen(arg_umsg) + 1;
-	umsg = nlmsg_reserve(nlmsg, umsg_len);
-	if (!umsg) {
-		fprintf(stderr, "Failed to allocate memory\n");
-		ret = EXIT_FAILURE;
-		goto on_error;
+	fprintf(stderr, "Injecting:\n");
+	for (char **it = uevent; it && *it; it++) {
+		umsg = nlmsg_reserve_unaligned(nlmsg, strlen(*it) + 1);
+		if (!umsg) {
+			fprintf(stderr, "Failed to allocate memory\n");
+			ret = -1;
+			goto on_error;
+		}
+
+		/* Place uevent message in buffer. */
+		memcpy(umsg, *it, strlen(*it) + 1);
+		fprintf(stderr, "%s\n", *it);
 	}
-	/* Place uevent message in buffer. */
-	memcpy(umsg, arg_umsg, umsg_len + 1);
 
 	ret = netlink_transaction(&nlh, nlmsg, nlmsg);
 	if (ret < 0) {
 		fprintf(stderr, "Failed to send netlink message: %s\n",
 			strerror(-ret));
-		ret = EXIT_FAILURE;
+		ret = -1;
 		goto on_error;
 	}
 
-	ret = EXIT_SUCCESS;
+	ret = 0;
 
 on_error:
 	netlink_close(&nlh);
-	exit(ret);
+	return ret;
+}
+
+int main(int argc, char *argv[])
+{
+	int ret, status;
+	pid_t arg_pid, helper_pid;
+
+	if (argc < 2) {
+		fprintf(stderr, "Missing arguments\n");
+		exit(EXIT_FAILURE);
+	}
+
+	/* Check whether we need to attach to any namespaces before opening the
+	 * netlink socket.
+	 */
+	arg_pid = atoi(argv[1]);
+
+	/* fork() helper task in case we need to attach to the owning user
+	 * namespace of the target network namespace. If we do we can't
+	 * reattach to the ancestor user namespace.
+	 */
+	helper_pid = fork();
+	if (helper_pid < 0)
+		_exit(EXIT_FAILURE);
+
+	if (helper_pid == 0) {
+		ret = inject_uevent_by_pid(arg_pid);
+		if (ret < 0)
+			_exit(EXIT_FAILURE);
+
+		_exit(EXIT_SUCCESS);
+	}
+
+again:
+	ret = waitpid(helper_pid, &status, 0);
+	if (ret < 0) {
+		if (errno == EINTR)
+			goto again;
+
+		_exit(EXIT_FAILURE);
+	}
+
+	if (ret != helper_pid)
+		goto again;
+
+	if (!WIFEXITED(status) || WEXITSTATUS(status) != 0)
+		_exit(EXIT_FAILURE);
+
+	_exit(EXIT_SUCCESS);
 }

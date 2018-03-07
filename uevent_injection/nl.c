@@ -148,6 +148,24 @@ extern void *nlmsg_reserve(struct nlmsg *nlmsg, size_t len)
 	return buf;
 }
 
+extern void *nlmsg_reserve_unaligned(struct nlmsg *nlmsg, size_t len)
+{
+	void *buf;
+	size_t nlmsg_len = nlmsg->nlmsghdr->nlmsg_len;
+	size_t tlen = len;
+
+	if (nlmsg_len + tlen > nlmsg->cap)
+		return NULL;
+
+	buf = ((char *)(nlmsg->nlmsghdr)) + nlmsg_len;
+	nlmsg->nlmsghdr->nlmsg_len += tlen;
+
+	if (tlen > len)
+		memset(buf + len, 0, tlen - len);
+
+	return buf;
+}
+
 extern struct nlmsg *nlmsg_alloc_reserve(size_t size)
 {
 	struct nlmsg *nlmsg;
