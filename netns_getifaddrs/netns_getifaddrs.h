@@ -1,10 +1,7 @@
-#include <arpa/inet.h>
-#include <features.h>
+#ifndef _IFADDRS_H
+#define _IFADDRS_H
+
 #include <linux/types.h>
-#include <netinet/in.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/socket.h>
 
 struct ifaddrs {
 	struct ifaddrs *ifa_next;
@@ -24,3 +21,5 @@ struct ifaddrs {
 extern void freeifaddrs(struct ifaddrs *);
 extern int getifaddrs(struct ifaddrs **);
 extern int netns_getifaddrs(struct ifaddrs **, __s32);
+
+#endif /* _IFADDRS_H */
