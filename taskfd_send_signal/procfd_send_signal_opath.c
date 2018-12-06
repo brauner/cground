@@ -10,11 +10,11 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-static inline int do_procfd_send_signal(int procfd, int sig, siginfo_t *info,
+static inline int do_taskfd_send_signal(int taskfd, int sig, siginfo_t *info,
 					unsigned int flags)
 {
-#ifdef __NR_procfd_send_signal
-	return syscall(__NR_procfd_send_signal, procfd, sig, info, flags);
+#ifdef __NR_taskfd_send_signal
+	return syscall(__NR_taskfd_send_signal, taskfd, sig, info, flags);
 #else
 	return -ENOSYS;
 #endif
@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
 	if (argc < 3)
 		exit(EXIT_FAILURE);
 
-	fd = open(argv[1], O_DIRECTORY | O_CLOEXEC);
+	fd = open(argv[1], O_DIRECTORY | O_CLOEXEC | O_PATH);
 	if (fd < 0) {
 		printf("%s - Failed to open \"%s\"\n", strerror(errno), argv[1]);
 		exit(EXIT_FAILURE);
@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
 	sig = atoi(argv[2]);
 
 	printf("Sending signal %d to process %s\n", sig, argv[1]);
-	ret = do_procfd_send_signal(fd, sig, NULL, 0);
+	ret = do_taskfd_send_signal(fd, sig, NULL, 0);
 
 	saved_errno = errno;
 	close(fd);
