@@ -1,0 +1,12 @@
+              no fsid mappings | with fsid mappings
+ 0  mappings: 365 ns             N/A
+ 1  mappings: 363 ns             363 ns
+ 2  mappings: 363 ns             364 ns
+ 3  mappings: 366 ns             365 ns
+ 5  mappings: 363 ns             365 ns
+ 10 mappings: 387 ns             389 ns
+ 50 mappings: 401 ns             397 ns
+100 mappings: 399 ns             399 ns
+200 mappings: 430 ns             404 ns
+300 mappings: 432 ns             413 ns
+340 mappings: 500 ns             484 ns

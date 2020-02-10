@@ -1,0 +1,11 @@
+ 0  mappings: 365 ns
+ 1  mappings: 367 ns
+ 2  mappings: 369 ns
+ 3  mappings: 368 ns
+ 5  mappings: 368 ns
+ 10 mappings: 388 ns
+ 50 mappings: 398 ns
+100 mappings: 405 ns
+200 mappings: 407 ns
+300 mappings: 494 ns
+340 mappings: 497 ns

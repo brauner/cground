@@ -1,0 +1,1020 @@
+Script started on 2020-02-12 12:37:51+01:00 [TERM="xterm-256color" TTY="/dev/pts/26" COLUMNS="240" LINES="28"]
+[0;32m[0m[1;34mbrauner[1;37m@[1;33mwittgenstein[1;37m|[1;33m~/src/git/cground/shiftfs_fsid_perf[1;32m[1;37m|[1;36mgithub-master %=
+[0m[1;34m>[0m[0;32m[0m asciinema play demo1.s[Kplay 
+[?1h=[H[2J[?12l[?25h[?1000l[?1002l[?1006l[?1005l[c(B[m[?12;25h[?12l[?25h[?1003l[?1006l[?2004l[1;1H[1;28r]112[2;15H[?1006h[?1002h[?25l[32m[1mroot@e1-vm(B[m:[34m[1m~(B[m# [K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K[38;5;230m[48;5;239m[H[$5|demo]                                        0:0- 1:1*                                        [%18|0|root@e1-vm: ~] (B[m[2;15H[?12l[?25h(B[m[?12;25h[?12l[?25h[?1003l[?1006l[?2004l[1;1H[1;28r[2;15H[?1006h[?1002h[?25l[32m[1mroot@e1-vm(B[m:[34m[1m~(B[m# [K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K[38;5;230m[48;5;239m[H[$5|demo]                                        0:0- 1:1*                                        [%18|0|root@e1-vm: ~] (B[m[2;15H[?12l[?25h# I've created a container that has the on-disk mapping
+[32m[1mroot@e1-vm(B[m:[34m[1m~(B[m# [?25l[32m[1m[2;1Hroot@e1-vm(B[m:[34m[1m~(B[m# # I've created a container that has the on-disk mapping[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# [K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K[38;5;230m[48;5;239m[H[$5|demo]                                        0:0- 1:1*                                        [%18|0|root@e1-vm: ~] (B[m[3;15H[?12l[?25h# o 3[K[K[K0 300000 1000000[K
+[32m[1mroot@e1-vm(B[m:[34m[1m~(B[m# [?25l[32m[1m[2;1Hroot@e1-vm(B[m:[34m[1m~(B[m# # I've created a container that has the on-disk mapping[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# # 0 300000 100000[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# [K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K[38;5;230m[48;5;239m[H[$5|demo]                                        0:0- 1:1*                                        [%18|0|root@e1-vm: ~] (B[m[4;15H[?12l[?25hls -al /var/lib/lxd/storage-pools/default/containers/f3[K4/rootfs/
+total 24
+drwxr-xr-x 1 300000 300000  196 Feb 10 23:42 [34m[1m.
+(B[md--x------ 1 root   root     78 Feb  8 13:44 [34m[1m..
+(B[mdrwxr-xr-x 1 300000 300000    0 Feb 10 23:42 [34m[1mRANDOM_DIR
+(B[m-rw-r--r-- 1 300000 300000    0 Feb 10 23:42 RANDOM_FILE
+lrwxrwxrwx 1 300000 300000    7 Feb  8 07:42 [36m[1mbin(B[m -> [34m[1musr/bin
+(B[mdrwxr-xr-x 1 300000 300000    0 Dec  5 14:39 [34m[1mboot
+(B[mdrwxr-xr-x 1 300000 300000    0 Feb  8 07:49 [34m[1mdev
+(B[mdrwxr-xr-x 1 300000 300000 2132 Feb  8 13:47 [34m[1metc
+(B[mdrwxr-xr-x 1 300000 300000   12 Feb  8 07:43 [34m[1mhome
+(B[mlrwxrwxrwx 1 300000 300000    7 Feb  8 07:42 [36m[1mlib(B[m -> [34m[1musr/lib
+(B[mlrwxrwxrwx 1 300000 300000    9 Feb  8 07:42 [36m[1mlib32(B[m -> [34m[1musr/lib32
+(B[mlrwxrwxrwx 1 300000 300000    9 Feb  8 07:42 [36m[1mlib64(B[m -> [34m[1musr/lib64
+(B[mlrwxrwxrwx 1 300000 300000   10 Feb  8 07:42 [36m[1mlibx32(B[m -> [34m[1musr/libx32
+(B[mdrwxr-xr-x 1 300000 300000    0 Feb  8 07:42 [34m[1mmedia
+(B[mdrwxr-xr-x 1 300000 300000    0 Feb  8 07:42 [34m[1mmnt
+(B[mdrwxr-xr-x 1 300000 300000    0 Feb  8 07:42 [34m[1mopt
+(B[mdrwxr-xr-x 1 300000 300000    0 Dec  5 14:39 [34m[1mproc
+(B[mdrwx------ 1 300000 300000   62 Feb  8 13:47 [34m[1mroot(B[m
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:44 [34m[1mrun
+(B[mlrwxrwxrwx 1 300000 300000    8 Feb  8 07:42 [36m[1msbin(B[m -> [34m[1musr/sbin
+(B[mdrwxr-xr-x 1 300000 300000    0 Feb  8 07:42 [34m[1msrv(B[m
+[2;28r[28;1H
+[2Adrwxr-xr-x 1 300000 300000    0 Dec  5 14:39 [34m[1msys
+(B[mdrwxrwxrwt 1 300000 300000   94 Feb 10 23:44 [30m[42mtmp
+[39m[49mdrwxr-xr-x 1 300000 300000  102 Feb  8 07:42 [34m[1musr[1;28r[28;49H(B[m[2;28r[2S[27ddrwxr-xr-x 1 300000 300000   90 Feb  8 07:42 [34m[1mvar[1;28r[28;1H(B[m[32m[1mroot@e1-vm(B[m:[34m[1m~(B[m# [?25l[2;1Htotal 24[K
+drwxr-xr-x 1 300000 300000  196 Feb 10 23:42 [34m[1m.(B[m[K
+d--x------ 1 root   root     78 Feb  8 13:44 [34m[1m..(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb 10 23:42 [34m[1mRANDOM_DIR(B[m[K
+-rw-r--r-- 1 300000 300000    0 Feb 10 23:42 RANDOM_FILE[K
+lrwxrwxrwx 1 300000 300000    7 Feb  8 07:42 [36m[1mbin(B[m -> [34m[1musr/bin(B[m[K
+drwxr-xr-x 1 300000 300000    0 Dec  5 14:39 [34m[1mboot(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:49 [34m[1mdev(B[m[K
+drwxr-xr-x 1 300000 300000 2132 Feb  8 13:47 [34m[1metc(B[m[K
+drwxr-xr-x 1 300000 300000   12 Feb  8 07:43 [34m[1mhome(B[m[K
+lrwxrwxrwx 1 300000 300000    7 Feb  8 07:42 [36m[1mlib(B[m -> [34m[1musr/lib(B[m[K
+lrwxrwxrwx 1 300000 300000    9 Feb  8 07:42 [36m[1mlib32(B[m -> [34m[1musr/lib32(B[m[K
+lrwxrwxrwx 1 300000 300000    9 Feb  8 07:42 [36m[1mlib64(B[m -> [34m[1musr/lib64(B[m[K
+lrwxrwxrwx 1 300000 300000   10 Feb  8 07:42 [36m[1mlibx32(B[m -> [34m[1musr/libx32(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:42 [34m[1mmedia(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:42 [34m[1mmnt(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:42 [34m[1mopt(B[m[K
+drwxr-xr-x 1 300000 300000    0 Dec  5 14:39 [34m[1mproc(B[m[K
+drwx------ 1 300000 300000   62 Feb  8 13:47 [34m[1mroot(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:44 [34m[1mrun(B[m[K
+lrwxrwxrwx 1 300000 300000    8 Feb  8 07:42 [36m[1msbin(B[m -> [34m[1musr/sbin(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:42 [34m[1msrv(B[m[K
+drwxr-xr-x 1 300000 300000    0 Dec  5 14:39 [34m[1msys(B[m[K
+drwxrwxrwt 1 300000 300000   94 Feb 10 23:44 [30m[42mtmp[39m[49m[K
+drwxr-xr-x 1 300000 300000  102 Feb  8 07:42 [34m[1musr(B[m[K
+drwxr-xr-x 1 300000 300000   90 Feb  8 07:42 [34m[1mvar(B[m[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# [K[38;5;230m[48;5;239m[H[$5|demo]                                        0:0- 1:1*                                        [%18|0|root@e1-vm: ~] (B[m[28;15H[?12l[?25h# We will set the security.idmap.s[Kisolated property on the containers[K.[2;28r[28;1H
+[1;28r[28;1H[32m[1mroot@e1-vm(B[m:[34m[1m~(B[m# # This will etl[K[K[Ktell LXD to assign a random id mapping to the container.[2;28r[28;1H
+[1;28r[28;1H[32m[1mroot@e1-vm(B[m:[34m[1m~(B[m# lxc config set f4 security.idmap.isolated true[2;28r[28;1H
+[1;28r[28;1H[32m[1mroot@e1-vm(B[m:[34m[1m~(B[m# [?25l[2;1Hdrwxr-xr-x 1 300000 300000    0 Feb 10 23:42 [34m[1mRANDOM_DIR(B[m[K
+-rw-r--r-- 1 300000 300000    0 Feb 10 23:42 RANDOM_FILE[K
+lrwxrwxrwx 1 300000 300000    7 Feb  8 07:42 [36m[1mbin(B[m -> [34m[1musr/bin(B[m[K
+drwxr-xr-x 1 300000 300000    0 Dec  5 14:39 [34m[1mboot(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:49 [34m[1mdev(B[m[K
+drwxr-xr-x 1 300000 300000 2132 Feb  8 13:47 [34m[1metc(B[m[K
+drwxr-xr-x 1 300000 300000   12 Feb  8 07:43 [34m[1mhome(B[m[K
+lrwxrwxrwx 1 300000 300000    7 Feb  8 07:42 [36m[1mlib(B[m -> [34m[1musr/lib(B[m[K
+lrwxrwxrwx 1 300000 300000    9 Feb  8 07:42 [36m[1mlib32(B[m -> [34m[1musr/lib32(B[m[K
+lrwxrwxrwx 1 300000 300000    9 Feb  8 07:42 [36m[1mlib64(B[m -> [34m[1musr/lib64(B[m[K
+lrwxrwxrwx 1 300000 300000   10 Feb  8 07:42 [36m[1mlibx32(B[m -> [34m[1musr/libx32(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:42 [34m[1mmedia(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:42 [34m[1mmnt(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:42 [34m[1mopt(B[m[K
+drwxr-xr-x 1 300000 300000    0 Dec  5 14:39 [34m[1mproc(B[m[K
+drwx------ 1 300000 300000   62 Feb  8 13:47 [34m[1mroot(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:44 [34m[1mrun(B[m[K
+lrwxrwxrwx 1 300000 300000    8 Feb  8 07:42 [36m[1msbin(B[m -> [34m[1musr/sbin(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:42 [34m[1msrv(B[m[K
+drwxr-xr-x 1 300000 300000    0 Dec  5 14:39 [34m[1msys(B[m[K
+drwxrwxrwt 1 300000 300000   94 Feb 10 23:44 [30m[42mtmp[39m[49m[K
+drwxr-xr-x 1 300000 300000  102 Feb  8 07:42 [34m[1musr(B[m[K
+drwxr-xr-x 1 300000 300000   90 Feb  8 07:42 [34m[1mvar(B[m[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# # We will set the security.idmap.isolated property on the container.[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# # This will tell LXD to assign a random id mapping to the container.[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# lxc config set f4 security.idmap.isolated true[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# [K[38;5;230m[48;5;239m[H[$5|demo]                                        0:0- 1:1*                                        [%18|0|root@e1-vm: ~] (B[m[28;15H[?12l[?25h# When we start this container LXD will now set up a random id mapping.[2;28r[28;1H
+[1;28r[28;1H[32m[1mroot@e1-vm(B[m:[34m[1m~(B[m# [?25l[2;1H-rw-r--r-- 1 300000 300000    0 Feb 10 23:42 RANDOM_FILE[K
+lrwxrwxrwx 1 300000 300000    7 Feb  8 07:42 [36m[1mbin(B[m -> [34m[1musr/bin(B[m[K
+drwxr-xr-x 1 300000 300000    0 Dec  5 14:39 [34m[1mboot(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:49 [34m[1mdev(B[m[K
+drwxr-xr-x 1 300000 300000 2132 Feb  8 13:47 [34m[1metc(B[m[K
+drwxr-xr-x 1 300000 300000   12 Feb  8 07:43 [34m[1mhome(B[m[K
+lrwxrwxrwx 1 300000 300000    7 Feb  8 07:42 [36m[1mlib(B[m -> [34m[1musr/lib(B[m[K
+lrwxrwxrwx 1 300000 300000    9 Feb  8 07:42 [36m[1mlib32(B[m -> [34m[1musr/lib32(B[m[K
+lrwxrwxrwx 1 300000 300000    9 Feb  8 07:42 [36m[1mlib64(B[m -> [34m[1musr/lib64(B[m[K
+lrwxrwxrwx 1 300000 300000   10 Feb  8 07:42 [36m[1mlibx32(B[m -> [34m[1musr/libx32(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:42 [34m[1mmedia(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:42 [34m[1mmnt(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:42 [34m[1mopt(B[m[K
+drwxr-xr-x 1 300000 300000    0 Dec  5 14:39 [34m[1mproc(B[m[K
+drwx------ 1 300000 300000   62 Feb  8 13:47 [34m[1mroot(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:44 [34m[1mrun(B[m[K
+lrwxrwxrwx 1 300000 300000    8 Feb  8 07:42 [36m[1msbin(B[m -> [34m[1musr/sbin(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:42 [34m[1msrv(B[m[K
+drwxr-xr-x 1 300000 300000    0 Dec  5 14:39 [34m[1msys(B[m[K
+drwxrwxrwt 1 300000 300000   94 Feb 10 23:44 [30m[42mtmp[39m[49m[K
+drwxr-xr-x 1 300000 300000  102 Feb  8 07:42 [34m[1musr(B[m[K
+drwxr-xr-x 1 300000 300000   90 Feb  8 07:42 [34m[1mvar(B[m[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# # We will set the security.idmap.isolated property on the container.[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# # This will tell LXD to assign a random id mapping to the container.[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# lxc config set f4 security.idmap.isolated true[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# # When we start this container LXD will now set up a random id mapping.[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# [K[38;5;230m[48;5;239m[H[$5|demo]                                        0:0- 1:1*                                        [%18|0|root@e1-vm: ~] (B[m[28;15H[?12l[?25h# LXD will also take care to setup an fsid mapping that matches[2;28r[28;1H
+[1;28r[28;1H[32m[1mroot@e1-vm(B[m:[34m[1m~(B[m# [?25l[2;1Hlrwxrwxrwx 1 300000 300000    7 Feb  8 07:42 [36m[1mbin(B[m -> [34m[1musr/bin(B[m[K
+drwxr-xr-x 1 300000 300000    0 Dec  5 14:39 [34m[1mboot(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:49 [34m[1mdev(B[m[K
+drwxr-xr-x 1 300000 300000 2132 Feb  8 13:47 [34m[1metc(B[m[K
+drwxr-xr-x 1 300000 300000   12 Feb  8 07:43 [34m[1mhome(B[m[K
+lrwxrwxrwx 1 300000 300000    7 Feb  8 07:42 [36m[1mlib(B[m -> [34m[1musr/lib(B[m[K
+lrwxrwxrwx 1 300000 300000    9 Feb  8 07:42 [36m[1mlib32(B[m -> [34m[1musr/lib32(B[m[K
+lrwxrwxrwx 1 300000 300000    9 Feb  8 07:42 [36m[1mlib64(B[m -> [34m[1musr/lib64(B[m[K
+lrwxrwxrwx 1 300000 300000   10 Feb  8 07:42 [36m[1mlibx32(B[m -> [34m[1musr/libx32(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:42 [34m[1mmedia(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:42 [34m[1mmnt(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:42 [34m[1mopt(B[m[K
+drwxr-xr-x 1 300000 300000    0 Dec  5 14:39 [34m[1mproc(B[m[K
+drwx------ 1 300000 300000   62 Feb  8 13:47 [34m[1mroot(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:44 [34m[1mrun(B[m[K
+lrwxrwxrwx 1 300000 300000    8 Feb  8 07:42 [36m[1msbin(B[m -> [34m[1musr/sbin(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:42 [34m[1msrv(B[m[K
+drwxr-xr-x 1 300000 300000    0 Dec  5 14:39 [34m[1msys(B[m[K
+drwxrwxrwt 1 300000 300000   94 Feb 10 23:44 [30m[42mtmp[39m[49m[K
+drwxr-xr-x 1 300000 300000  102 Feb  8 07:42 [34m[1musr(B[m[K
+drwxr-xr-x 1 300000 300000   90 Feb  8 07:42 [34m[1mvar(B[m[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# # We will set the security.idmap.isolated property on the container.[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# # This will tell LXD to assign a random id mapping to the container.[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# lxc config set f4 security.idmap.isolated true[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# # When we start this container LXD will now set up a random id mapping.[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# # LXD will also take care to setup an fsid mapping that matches[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# [K[38;5;230m[48;5;239m[H[$5|demo]                                        0:0- 1:1*                                        [%18|0|root@e1-vm: ~] (B[m[28;15H[?12l[?25h# the on-disk mapping.[2;28r[28;1H
+[1;28r[28;1H[32m[1mroot@e1-vm(B[m:[34m[1m~(B[m# [?25l[2;1Hdrwxr-xr-x 1 300000 300000    0 Dec  5 14:39 [34m[1mboot(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:49 [34m[1mdev(B[m[K
+drwxr-xr-x 1 300000 300000 2132 Feb  8 13:47 [34m[1metc(B[m[K
+drwxr-xr-x 1 300000 300000   12 Feb  8 07:43 [34m[1mhome(B[m[K
+lrwxrwxrwx 1 300000 300000    7 Feb  8 07:42 [36m[1mlib(B[m -> [34m[1musr/lib(B[m[K
+lrwxrwxrwx 1 300000 300000    9 Feb  8 07:42 [36m[1mlib32(B[m -> [34m[1musr/lib32(B[m[K
+lrwxrwxrwx 1 300000 300000    9 Feb  8 07:42 [36m[1mlib64(B[m -> [34m[1musr/lib64(B[m[K
+lrwxrwxrwx 1 300000 300000   10 Feb  8 07:42 [36m[1mlibx32(B[m -> [34m[1musr/libx32(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:42 [34m[1mmedia(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:42 [34m[1mmnt(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:42 [34m[1mopt(B[m[K
+drwxr-xr-x 1 300000 300000    0 Dec  5 14:39 [34m[1mproc(B[m[K
+drwx------ 1 300000 300000   62 Feb  8 13:47 [34m[1mroot(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:44 [34m[1mrun(B[m[K
+lrwxrwxrwx 1 300000 300000    8 Feb  8 07:42 [36m[1msbin(B[m -> [34m[1musr/sbin(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:42 [34m[1msrv(B[m[K
+drwxr-xr-x 1 300000 300000    0 Dec  5 14:39 [34m[1msys(B[m[K
+drwxrwxrwt 1 300000 300000   94 Feb 10 23:44 [30m[42mtmp[39m[49m[K
+drwxr-xr-x 1 300000 300000  102 Feb  8 07:42 [34m[1musr(B[m[K
+drwxr-xr-x 1 300000 300000   90 Feb  8 07:42 [34m[1mvar(B[m[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# # We will set the security.idmap.isolated property on the container.[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# # This will tell LXD to assign a random id mapping to the container.[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# lxc config set f4 security.idmap.isolated true[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# # When we start this container LXD will now set up a random id mapping.[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# # LXD will also take care to setup an fsid mapping that matches[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# # the on-disk mapping.[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# [K[38;5;230m[48;5;239m[H[$5|demo]                                        0:0- 1:1*                                        [%18|0|root@e1-vm: ~] (B[m[28;15H[?12l[?25hlxc start f4[2;28r[28;1H
+[1;28r[28;1H[32m[1mroot@e1-vm(B[m:[34m[1m~(B[m# [?25l[2;1Hdrwxr-xr-x 1 300000 300000    0 Feb  8 07:49 [34m[1mdev(B[m[K
+drwxr-xr-x 1 300000 300000 2132 Feb  8 13:47 [34m[1metc(B[m[K
+drwxr-xr-x 1 300000 300000   12 Feb  8 07:43 [34m[1mhome(B[m[K
+lrwxrwxrwx 1 300000 300000    7 Feb  8 07:42 [36m[1mlib(B[m -> [34m[1musr/lib(B[m[K
+lrwxrwxrwx 1 300000 300000    9 Feb  8 07:42 [36m[1mlib32(B[m -> [34m[1musr/lib32(B[m[K
+lrwxrwxrwx 1 300000 300000    9 Feb  8 07:42 [36m[1mlib64(B[m -> [34m[1musr/lib64(B[m[K
+lrwxrwxrwx 1 300000 300000   10 Feb  8 07:42 [36m[1mlibx32(B[m -> [34m[1musr/libx32(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:42 [34m[1mmedia(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:42 [34m[1mmnt(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:42 [34m[1mopt(B[m[K
+drwxr-xr-x 1 300000 300000    0 Dec  5 14:39 [34m[1mproc(B[m[K
+drwx------ 1 300000 300000   62 Feb  8 13:47 [34m[1mroot(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:44 [34m[1mrun(B[m[K
+lrwxrwxrwx 1 300000 300000    8 Feb  8 07:42 [36m[1msbin(B[m -> [34m[1musr/sbin(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:42 [34m[1msrv(B[m[K
+drwxr-xr-x 1 300000 300000    0 Dec  5 14:39 [34m[1msys(B[m[K
+drwxrwxrwt 1 300000 300000   94 Feb 10 23:44 [30m[42mtmp[39m[49m[K
+drwxr-xr-x 1 300000 300000  102 Feb  8 07:42 [34m[1musr(B[m[K
+drwxr-xr-x 1 300000 300000   90 Feb  8 07:42 [34m[1mvar(B[m[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# # We will set the security.idmap.isolated property on the container.[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# # This will tell LXD to assign a random id mapping to the container.[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# lxc config set f4 security.idmap.isolated true[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# # When we start this container LXD will now set up a random id mapping.[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# # LXD will also take care to setup an fsid mapping that matches[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# # the on-disk mapping.[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# lxc start f4[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# [K[38;5;230m[48;5;239m[H[$5|demo]                                        0:0- 1:1*                                        [%18|0|root@e1-vm: ~] (B[m[28;15H[?12l[?25h#L[K Let's enter the container and look at the id mappings.[2;28r[28;1H
+[1;28r[28;1H[32m[1mroot@e1-vm(B[m:[34m[1m~(B[m# [?25l[2;1Hdrwxr-xr-x 1 300000 300000 2132 Feb  8 13:47 [34m[1metc(B[m[K
+drwxr-xr-x 1 300000 300000   12 Feb  8 07:43 [34m[1mhome(B[m[K
+lrwxrwxrwx 1 300000 300000    7 Feb  8 07:42 [36m[1mlib(B[m -> [34m[1musr/lib(B[m[K
+lrwxrwxrwx 1 300000 300000    9 Feb  8 07:42 [36m[1mlib32(B[m -> [34m[1musr/lib32(B[m[K
+lrwxrwxrwx 1 300000 300000    9 Feb  8 07:42 [36m[1mlib64(B[m -> [34m[1musr/lib64(B[m[K
+lrwxrwxrwx 1 300000 300000   10 Feb  8 07:42 [36m[1mlibx32(B[m -> [34m[1musr/libx32(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:42 [34m[1mmedia(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:42 [34m[1mmnt(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:42 [34m[1mopt(B[m[K
+drwxr-xr-x 1 300000 300000    0 Dec  5 14:39 [34m[1mproc(B[m[K
+drwx------ 1 300000 300000   62 Feb  8 13:47 [34m[1mroot(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:44 [34m[1mrun(B[m[K
+lrwxrwxrwx 1 300000 300000    8 Feb  8 07:42 [36m[1msbin(B[m -> [34m[1musr/sbin(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:42 [34m[1msrv(B[m[K
+drwxr-xr-x 1 300000 300000    0 Dec  5 14:39 [34m[1msys(B[m[K
+drwxrwxrwt 1 300000 300000   94 Feb 10 23:44 [30m[42mtmp[39m[49m[K
+drwxr-xr-x 1 300000 300000  102 Feb  8 07:42 [34m[1musr(B[m[K
+drwxr-xr-x 1 300000 300000   90 Feb  8 07:42 [34m[1mvar(B[m[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# # We will set the security.idmap.isolated property on the container.[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# # This will tell LXD to assign a random id mapping to the container.[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# lxc config set f4 security.idmap.isolated true[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# # When we start this container LXD will now set up a random id mapping.[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# # LXD will also take care to setup an fsid mapping that matches[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# # the on-disk mapping.[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# lxc start f4[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# # Let's enter the container and look at the id mappings.[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# [K[38;5;230m[48;5;239m[H[$5|demo]                                        0:0- 1:1*                                        [%18|0|root@e1-vm: ~] (B[m[28;15H[?12l[?25hlxc exec f4 bash[2;28r[28;1H
+[1;28r[28;1Hroot@f4:~# [?25l[2;1Hdrwxr-xr-x 1 300000 300000   12 Feb  8 07:43 [34m[1mhome(B[m[K
+lrwxrwxrwx 1 300000 300000    7 Feb  8 07:42 [36m[1mlib(B[m -> [34m[1musr/lib(B[m[K
+lrwxrwxrwx 1 300000 300000    9 Feb  8 07:42 [36m[1mlib32(B[m -> [34m[1musr/lib32(B[m[K
+lrwxrwxrwx 1 300000 300000    9 Feb  8 07:42 [36m[1mlib64(B[m -> [34m[1musr/lib64(B[m[K
+lrwxrwxrwx 1 300000 300000   10 Feb  8 07:42 [36m[1mlibx32(B[m -> [34m[1musr/libx32(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:42 [34m[1mmedia(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:42 [34m[1mmnt(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:42 [34m[1mopt(B[m[K
+drwxr-xr-x 1 300000 300000    0 Dec  5 14:39 [34m[1mproc(B[m[K
+drwx------ 1 300000 300000   62 Feb  8 13:47 [34m[1mroot(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:44 [34m[1mrun(B[m[K
+lrwxrwxrwx 1 300000 300000    8 Feb  8 07:42 [36m[1msbin(B[m -> [34m[1musr/sbin(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:42 [34m[1msrv(B[m[K
+drwxr-xr-x 1 300000 300000    0 Dec  5 14:39 [34m[1msys(B[m[K
+drwxrwxrwt 1 300000 300000   94 Feb 10 23:44 [30m[42mtmp[39m[49m[K
+drwxr-xr-x 1 300000 300000  102 Feb  8 07:42 [34m[1musr(B[m[K
+drwxr-xr-x 1 300000 300000   90 Feb  8 07:42 [34m[1mvar(B[m[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# # We will set the security.idmap.isolated property on the container.[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# # This will tell LXD to assign a random id mapping to the container.[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# lxc config set f4 security.idmap.isolated true[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# # When we start this container LXD will now set up a random id mapping.[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# # LXD will also take care to setup an fsid mapping that matches[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# # the on-disk mapping.[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# lxc start f4[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# # Let's enter the container and look at the id mappings.[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# lxc exec f4 bash[K
+root@f4:~# [K[38;5;230m[48;5;239m[H[$5|demo]                                          0:0- 1:1*                                         [%18|0|root@f4: ~] (B[m[28;12H[?12l[?25hclear[2;28r[28;1H
+[1;28r[28;1H[2;28r[2;1H[J[1;28r[2;1Hroot@f4:~# [?25lroot@f4:~# [K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K[38;5;230m[48;5;239m[H[$5|demo]                                          0:0- 1:1*                                         [%18|0|root@f4: ~] (B[m[2;12H[?12l[?25hcat /proc/self/uid_map 
+         0     165536      65536
+root@f4:~# cat /proc/self/gid_map 
+         0     165536      65536
+root@f4:~# [?25l[2;1Hroot@f4:~# cat /proc/self/uid_map [K
+         0     165536      65536[K
+root@f4:~# cat /proc/self/gid_map [K
+         0     165536      65536[K
+root@f4:~# [K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K[38;5;230m[48;5;239m[H[$5|demo]                                          0:0- 1:1*                                         [%18|0|root@f4: ~] (B[m[6;12H[?12l[?25h# Now let's look at the fsid mappings.
+root@f4:~# [?25l[2;1Hroot@f4:~# cat /proc/self/uid_map [K
+         0     165536      65536[K
+root@f4:~# cat /proc/self/gid_map [K
+         0     165536      65536[K
+root@f4:~# # Now let's look at the fsid mappings.[K
+root@f4:~# [K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K[38;5;230m[48;5;239m[H[$5|demo]                                          0:0- 1:1*                                         [%18|0|root@f4: ~] (B[m[7;12H[?12l[?25hcat /proc/self/fsuid_map 
+         0     300000     100000
+root@f4:~# [?25l[2;1Hroot@f4:~# cat /proc/self/uid_map [K
+         0     165536      65536[K
+root@f4:~# cat /proc/self/gid_map [K
+         0     165536      65536[K
+root@f4:~# # Now let's look at the fsid mappings.[K
+root@f4:~# cat /proc/self/fsuid_map [K
+         0     300000     100000[K
+root@f4:~# [K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K[38;5;230m[48;5;239m[H[$5|demo]                                          0:0- 1:1*                                         [%18|0|root@f4: ~] (B[m[9;12H[?12l[?25hcat /proc/self/fsgid_map 
+         0     300000     100000
+root@f4:~# [?25l[2;1Hroot@f4:~# cat /proc/self/uid_map [K
+         0     165536      65536[K
+root@f4:~# cat /proc/self/gid_map [K
+         0     165536      65536[K
+root@f4:~# # Now let's look at the fsid mappings.[K
+root@f4:~# cat /proc/self/fsuid_map [K
+         0     300000     100000[K
+root@f4:~# cat /proc/self/fsgid_map [K
+         0     300000     100000[K
+root@f4:~# [K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K[38;5;230m[48;5;239m[H[$5|demo]                                          0:0- 1:1*                                         [%18|0|root@f4: ~] (B[m[11;12H[?12l[?25h# Let's verify that the containers [K[K's rootfs is readable and writable for us.
+root@f4:~# ls -al 
+total 12
+drwx------ 1 root root   62 Feb  8 13:47 [34m[1m.
+(B[mdrwxr-xr-x 1 root root  196 Feb 10 23:42 [34m[1m..
+(B[m-rw------- 1 root root  983 Feb 10 23:43 .bash_history
+-rw-r--r-- 1 root root 3106 Dec  5 14:39 .bashrc
+-rw-r--r-- 1 root root  161 Dec  5 14:39 .profile
+-rw-r--r-- 1 root root    0 Feb  8 13:47 aaa
+root@f4:~# [?25l[2;1Hroot@f4:~# cat /proc/self/uid_map [K
+         0     165536      65536[K
+root@f4:~# cat /proc/self/gid_map [K
+         0     165536      65536[K
+root@f4:~# # Now let's look at the fsid mappings.[K
+root@f4:~# cat /proc/self/fsuid_map [K
+         0     300000     100000[K
+root@f4:~# cat /proc/self/fsgid_map [K
+         0     300000     100000[K
+root@f4:~# # Let's verify that the container's rootfs is readable and writable for us.[K
+root@f4:~# ls -al [K
+total 12[K
+drwx------ 1 root root   62 Feb  8 13:47 [34m[1m.(B[m[K
+drwxr-xr-x 1 root root  196 Feb 10 23:42 [34m[1m..(B[m[K
+-rw------- 1 root root  983 Feb 10 23:43 .bash_history[K
+-rw-r--r-- 1 root root 3106 Dec  5 14:39 .bashrc[K
+-rw-r--r-- 1 root root  161 Dec  5 14:39 .profile[K
+-rw-r--r-- 1 root root    0 Feb  8 13:47 aaa[K
+root@f4:~# [K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K[38;5;230m[48;5;239m[H[$5|demo]                                          0:0- 1:1*                                         [%18|0|root@f4: ~] (B[m[20;12H[?12l[?25hls -al /
+[2;28r[19S[2dtotal 24
+drwxr-xr-x   1 root   root     196 Feb 10 23:42 [34m[1m.
+(B[mdrwxr-xr-x   1 root   root     196 Feb 10 23:42 [34m[1m..
+(B[mdrwxr-xr-x   1 root   root       0 Feb 10 23:42 [34m[1mRANDOM_DIR
+(B[m-rw-r--r--   1 root   root       0 Feb 10 23:42 RANDOM_FILE
+lrwxrwxrwx   1 root   root       7 Feb  8 07:42 [36m[1mbin(B[m -> [34m[1musr/bin
+(B[mdrwxr-xr-x   1 root   root       0 Dec  5 14:39 [34m[1mboot
+(B[mdrwxr-xr-x   8 root   root     480 Feb 10 23:46 [34m[1mdev
+(B[mdrwxr-xr-x   1 root   root    2132 Feb  8 13:47 [34m[1metc
+(B[mdrwxr-xr-x   1 root   root      12 Feb  8 07:43 [34m[1mhome
+(B[mlrwxrwxrwx   1 root   root       7 Feb  8 07:42 [36m[1mlib(B[m -> [34m[1musr/lib
+(B[mlrwxrwxrwx   1 root   root       9 Feb  8 07:42 [36m[1mlib32(B[m -> [34m[1musr/lib32
+(B[mlrwxrwxrwx   1 root   root       9 Feb  8 07:42 [36m[1mlib64(B[m -> [34m[1musr/lib64
+(B[mlrwxrwxrwx   1 root   root      10 Feb  8 07:42 [36m[1mlibx32(B[m -> [34m[1musr/libx32
+(B[mdrwxr-xr-x   1 root   root       0 Feb  8 07:42 [34m[1mmedia
+(B[mdrwxr-xr-x   1 root   root       0 Feb  8 07:42 [34m[1mmnt
+(B[mdrwxr-xr-x   1 root   root       0 Feb  8 07:42 [34m[1mopt
+(B[mdr-xr-xr-x 239 nobody nogroup    0 Feb 10 23:46 [34m[1mproc
+(B[mdrwx------   1 root   root      62 Feb  8 13:47 [34m[1mroot
+(B[mdrwxr-xr-x  12 root   root     360 Feb 10 23:46 [34m[1mrun
+(B[mlrwxrwxrwx   1 root   root       8 Feb  8 07:42 [36m[1msbin(B[m -> [34m[1musr/sbin
+(B[mdrwxr-xr-x   1 root   root       0 Feb  8 07:42 [34m[1msrv
+(B[mdr-xr-xr-x  13 nobody nogroup    0 Feb 10 23:46 [34m[1msys
+(B[mdrwxrwxrwt   1 root   root     410 Feb 10 23:47 [30m[42mtmp
+[39m[49mdrwxr-xr-x   1 root   root     102 Feb  8 07:42 [34m[1musr
+(B[mdrwxr-xr-x   1 root   root      90 Feb  8 07:42 [34m[1mvar[1;28r[28;1H(B[mroot@f4:~# [?25l[2;1Htotal 24[K
+drwxr-xr-x   1 root   root     196 Feb 10 23:42 [34m[1m.(B[m[K
+drwxr-xr-x   1 root   root     196 Feb 10 23:42 [34m[1m..(B[m[K
+drwxr-xr-x   1 root   root       0 Feb 10 23:42 [34m[1mRANDOM_DIR(B[m[K
+-rw-r--r--   1 root   root       0 Feb 10 23:42 RANDOM_FILE[K
+lrwxrwxrwx   1 root   root       7 Feb  8 07:42 [36m[1mbin(B[m -> [34m[1musr/bin(B[m[K
+drwxr-xr-x   1 root   root       0 Dec  5 14:39 [34m[1mboot(B[m[K
+drwxr-xr-x   8 root   root     480 Feb 10 23:46 [34m[1mdev(B[m[K
+drwxr-xr-x   1 root   root    2132 Feb  8 13:47 [34m[1metc(B[m[K
+drwxr-xr-x   1 root   root      12 Feb  8 07:43 [34m[1mhome(B[m[K
+lrwxrwxrwx   1 root   root       7 Feb  8 07:42 [36m[1mlib(B[m -> [34m[1musr/lib(B[m[K
+lrwxrwxrwx   1 root   root       9 Feb  8 07:42 [36m[1mlib32(B[m -> [34m[1musr/lib32(B[m[K
+lrwxrwxrwx   1 root   root       9 Feb  8 07:42 [36m[1mlib64(B[m -> [34m[1musr/lib64(B[m[K
+lrwxrwxrwx   1 root   root      10 Feb  8 07:42 [36m[1mlibx32(B[m -> [34m[1musr/libx32(B[m[K
+drwxr-xr-x   1 root   root       0 Feb  8 07:42 [34m[1mmedia(B[m[K
+drwxr-xr-x   1 root   root       0 Feb  8 07:42 [34m[1mmnt(B[m[K
+drwxr-xr-x   1 root   root       0 Feb  8 07:42 [34m[1mopt(B[m[K
+dr-xr-xr-x 239 nobody nogroup    0 Feb 10 23:46 [34m[1mproc(B[m[K
+drwx------   1 root   root      62 Feb  8 13:47 [34m[1mroot(B[m[K
+drwxr-xr-x  12 root   root     360 Feb 10 23:46 [34m[1mrun(B[m[K
+lrwxrwxrwx   1 root   root       8 Feb  8 07:42 [36m[1msbin(B[m -> [34m[1musr/sbin(B[m[K
+drwxr-xr-x   1 root   root       0 Feb  8 07:42 [34m[1msrv(B[m[K
+dr-xr-xr-x  13 nobody nogroup    0 Feb 10 23:46 [34m[1msys(B[m[K
+drwxrwxrwt   1 root   root     410 Feb 10 23:47 [30m[42mtmp[39m[49m[K
+drwxr-xr-x   1 root   root     102 Feb  8 07:42 [34m[1musr(B[m[K
+drwxr-xr-x   1 root   root      90 Feb  8 07:42 [34m[1mvar(B[m[K
+root@f4:~# [K[38;5;230m[48;5;239m[H[$5|demo]                                          0:0- 1:1*                                         [%18|0|root@f4: ~] (B[m[28;12H[?12l[?25h# Let's create a directory and file in /[2;28r[28;1H
+root@f4:~# [1;28r[28;12H[?25l[2;1Hdrwxr-xr-x   1 root   root     196 Feb 10 23:42 [34m[1m.(B[m[K
+drwxr-xr-x   1 root   root     196 Feb 10 23:42 [34m[1m..(B[m[K
+drwxr-xr-x   1 root   root       0 Feb 10 23:42 [34m[1mRANDOM_DIR(B[m[K
+-rw-r--r--   1 root   root       0 Feb 10 23:42 RANDOM_FILE[K
+lrwxrwxrwx   1 root   root       7 Feb  8 07:42 [36m[1mbin(B[m -> [34m[1musr/bin(B[m[K
+drwxr-xr-x   1 root   root       0 Dec  5 14:39 [34m[1mboot(B[m[K
+drwxr-xr-x   8 root   root     480 Feb 10 23:46 [34m[1mdev(B[m[K
+drwxr-xr-x   1 root   root    2132 Feb  8 13:47 [34m[1metc(B[m[K
+drwxr-xr-x   1 root   root      12 Feb  8 07:43 [34m[1mhome(B[m[K
+lrwxrwxrwx   1 root   root       7 Feb  8 07:42 [36m[1mlib(B[m -> [34m[1musr/lib(B[m[K
+lrwxrwxrwx   1 root   root       9 Feb  8 07:42 [36m[1mlib32(B[m -> [34m[1musr/lib32(B[m[K
+lrwxrwxrwx   1 root   root       9 Feb  8 07:42 [36m[1mlib64(B[m -> [34m[1musr/lib64(B[m[K
+lrwxrwxrwx   1 root   root      10 Feb  8 07:42 [36m[1mlibx32(B[m -> [34m[1musr/libx32(B[m[K
+drwxr-xr-x   1 root   root       0 Feb  8 07:42 [34m[1mmedia(B[m[K
+drwxr-xr-x   1 root   root       0 Feb  8 07:42 [34m[1mmnt(B[m[K
+drwxr-xr-x   1 root   root       0 Feb  8 07:42 [34m[1mopt(B[m[K
+dr-xr-xr-x 239 nobody nogroup    0 Feb 10 23:46 [34m[1mproc(B[m[K
+drwx------   1 root   root      62 Feb  8 13:47 [34m[1mroot(B[m[K
+drwxr-xr-x  12 root   root     360 Feb 10 23:46 [34m[1mrun(B[m[K
+lrwxrwxrwx   1 root   root       8 Feb  8 07:42 [36m[1msbin(B[m -> [34m[1musr/sbin(B[m[K
+drwxr-xr-x   1 root   root       0 Feb  8 07:42 [34m[1msrv(B[m[K
+dr-xr-xr-x  13 nobody nogroup    0 Feb 10 23:46 [34m[1msys(B[m[K
+drwxrwxrwt   1 root   root     410 Feb 10 23:47 [30m[42mtmp[39m[49m[K
+drwxr-xr-x   1 root   root     102 Feb  8 07:42 [34m[1musr(B[m[K
+drwxr-xr-x   1 root   root      90 Feb  8 07:42 [34m[1mvar(B[m[K
+root@f4:~# # Let's create a directory and file in /[K
+root@f4:~# [K[38;5;230m[48;5;239m[H[$5|demo]                                          0:0- 1:1*                                         [%18|0|root@f4: ~] (B[m[28;12H[?12l[?25hclear[2;28r[28;1H
+[1;28r[28;1H[2;28r[2;1H[J[1;28r[2;1Hroot@f4:~# [?25lroot@f4:~# [K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K[38;5;230m[48;5;239m[H[$5|demo]                                          0:0- 1:1*                                         [%18|0|root@f4: ~] (B[m[2;12H[?12l[?25ht[Kmkdir /A
+root@f4:~# [?25l[2;1Hroot@f4:~# mkdir /A[K
+root@f4:~# [K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K[38;5;230m[48;5;239m[H[$5|demo]                                          0:0- 1:1*                                         [%18|0|root@f4: ~] (B[m[3;12H[?12l[?25htouch /A [K/B.txt
+root@f4:~# [?25l[2;1Hroot@f4:~# mkdir /A[K
+root@f4:~# touch /A/B.txt[K
+root@f4:~# [K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K[38;5;230m[48;5;239m[H[$5|demo]                                          0:0- 1:1*                                         [%18|0|root@f4: ~] (B[m[4;12H[?12l[?25h# Verify that per[K[K[Kwo[K[Kownership is correct from inside the container.
+root@f4:~# [?25l[2;1Hroot@f4:~# mkdir /A[K
+root@f4:~# touch /A/B.txt[K
+root@f4:~# # Verify that ownership is correct from inside the container.[K
+root@f4:~# [K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K[38;5;230m[48;5;239m[H[$5|demo]                                          0:0- 1:1*                                         [%18|0|root@f4: ~] (B[m[5;12H[?12l[?25hls -al /
+total 24
+drwxr-xr-x   1 root   root     198 Feb 10 23:48 [34m[1m.
+(B[mdrwxr-xr-x   1 root   root     198 Feb 10 23:48 [34m[1m..
+(B[mdrwxr-xr-x   1 root   root      10 Feb 10 23:48 [34m[1mA
+(B[mdrwxr-xr-x   1 root   root       0 Feb 10 23:42 [34m[1mRANDOM_DIR
+(B[m-rw-r--r--   1 root   root       0 Feb 10 23:42 RANDOM_FILE
+lrwxrwxrwx   1 root   root       7 Feb  8 07:42 [36m[1mbin(B[m -> [34m[1musr/bin
+(B[mdrwxr-xr-x   1 root   root       0 Dec  5 14:39 [34m[1mboot
+(B[mdrwxr-xr-x   8 root   root     480 Feb 10 23:46 [34m[1mdev
+(B[mdrwxr-xr-x   1 root   root    2132 Feb  8 13:47 [34m[1metc
+(B[mdrwxr-xr-x   1 root   root      12 Feb  8 07:43 [34m[1mhome
+(B[mlrwxrwxrwx   1 root   root       7 Feb  8 07:42 [36m[1mlib(B[m -> [34m[1musr/lib
+(B[mlrwxrwxrwx   1 root   root       9 Feb  8 07:42 [36m[1mlib32(B[m -> [34m[1musr/lib32
+(B[mlrwxrwxrwx   1 root   root       9 Feb  8 07:42 [36m[1mlib64(B[m -> [34m[1musr/lib64
+(B[mlrwxrwxrwx   1 root   root      10 Feb  8 07:42 [36m[1mlibx32(B[m -> [34m[1musr/libx32
+(B[mdrwxr-xr-x   1 root   root       0 Feb  8 07:42 [34m[1mmedia
+(B[mdrwxr-xr-x   1 root   root       0 Feb  8 07:42 [34m[1mmnt
+(B[mdrwxr-xr-x   1 root   root       0 Feb  8 07:42 [34m[1mopt
+(B[mdr-xr-xr-x 239 nobody nogroup    0 Feb 10 23:46 [34m[1mproc
+(B[mdrwx------   1 root   root      62 Feb  8 13:47 [34m[1mroot
+(B[mdrwxr-xr-x  12 root   root     360 Feb 10 23:46 [34m[1mrun(B[m[2;28r[5S[22dlrwxrwxrwx   1 root   root       8 Feb  8 07:42 [36m[1msbin(B[m -> [34m[1musr/sbin
+(B[mdrwxr-xr-x   1 root   root       0 Feb  8 07:42 [34m[1msrv
+(B[mdr-xr-xr-x  13 nobody nogroup    0 Feb 10 23:46 [34m[1msys
+(B[mdrwxrwxrwt   1 root   root     410 Feb 10 23:47 [30m[42mtmp
+[39m[49mdrwxr-xr-x   1 root   root     102 Feb  8 07:42 [34m[1musr
+(B[mdrwxr-xr-x   1 root   root      90 Feb  8 07:42 [34m[1mvar[1;28r[28;1H(B[mroot@f4:~# [?25l[2;1Hdrwxr-xr-x   1 root   root     198 Feb 10 23:48 [34m[1m.(B[m[K
+drwxr-xr-x   1 root   root     198 Feb 10 23:48 [34m[1m..(B[m[K
+drwxr-xr-x   1 root   root      10 Feb 10 23:48 [34m[1mA(B[m[K
+drwxr-xr-x   1 root   root       0 Feb 10 23:42 [34m[1mRANDOM_DIR(B[m[K
+-rw-r--r--   1 root   root       0 Feb 10 23:42 RANDOM_FILE[K
+lrwxrwxrwx   1 root   root       7 Feb  8 07:42 [36m[1mbin(B[m -> [34m[1musr/bin(B[m[K
+drwxr-xr-x   1 root   root       0 Dec  5 14:39 [34m[1mboot(B[m[K
+drwxr-xr-x   8 root   root     480 Feb 10 23:46 [34m[1mdev(B[m[K
+drwxr-xr-x   1 root   root    2132 Feb  8 13:47 [34m[1metc(B[m[K
+drwxr-xr-x   1 root   root      12 Feb  8 07:43 [34m[1mhome(B[m[K
+lrwxrwxrwx   1 root   root       7 Feb  8 07:42 [36m[1mlib(B[m -> [34m[1musr/lib(B[m[K
+lrwxrwxrwx   1 root   root       9 Feb  8 07:42 [36m[1mlib32(B[m -> [34m[1musr/lib32(B[m[K
+lrwxrwxrwx   1 root   root       9 Feb  8 07:42 [36m[1mlib64(B[m -> [34m[1musr/lib64(B[m[K
+lrwxrwxrwx   1 root   root      10 Feb  8 07:42 [36m[1mlibx32(B[m -> [34m[1musr/libx32(B[m[K
+drwxr-xr-x   1 root   root       0 Feb  8 07:42 [34m[1mmedia(B[m[K
+drwxr-xr-x   1 root   root       0 Feb  8 07:42 [34m[1mmnt(B[m[K
+drwxr-xr-x   1 root   root       0 Feb  8 07:42 [34m[1mopt(B[m[K
+dr-xr-xr-x 239 nobody nogroup    0 Feb 10 23:46 [34m[1mproc(B[m[K
+drwx------   1 root   root      62 Feb  8 13:47 [34m[1mroot(B[m[K
+drwxr-xr-x  12 root   root     360 Feb 10 23:46 [34m[1mrun(B[m[K
+lrwxrwxrwx   1 root   root       8 Feb  8 07:42 [36m[1msbin(B[m -> [34m[1musr/sbin(B[m[K
+drwxr-xr-x   1 root   root       0 Feb  8 07:42 [34m[1msrv(B[m[K
+dr-xr-xr-x  13 nobody nogroup    0 Feb 10 23:46 [34m[1msys(B[m[K
+drwxrwxrwt   1 root   root     410 Feb 10 23:47 [30m[42mtmp[39m[49m[K
+drwxr-xr-x   1 root   root     102 Feb  8 07:42 [34m[1musr(B[m[K
+drwxr-xr-x   1 root   root      90 Feb  8 07:42 [34m[1mvar(B[m[K
+root@f4:~# [K[38;5;230m[48;5;239m[H[$5|demo]                                          0:0- 1:1*                                         [%18|0|root@f4: ~] (B[m[28;12H[?12l[?25hls -al /A/[2;28r[28;1H
+[1;28r[28;1H[2;28r[28;1H
+[Atotal 0[1;28r[28;1H[2;28r[3S[25ddrwxr-xr-x 1 root root  10 Feb 10 23:48 [34m[1m.
+(B[mdrwxr-xr-x 1 root root 198 Feb 10 23:48 [34m[1m..
+(B[m-rw-r--r-- 1 root root   0 Feb 10 23:48 B.txt[1;28r[28;1Hroot@f4:~# [?25l[2;1Hlrwxrwxrwx   1 root   root       7 Feb  8 07:42 [36m[1mbin(B[m -> [34m[1musr/bin(B[m[K
+drwxr-xr-x   1 root   root       0 Dec  5 14:39 [34m[1mboot(B[m[K
+drwxr-xr-x   8 root   root     480 Feb 10 23:46 [34m[1mdev(B[m[K
+drwxr-xr-x   1 root   root    2132 Feb  8 13:47 [34m[1metc(B[m[K
+drwxr-xr-x   1 root   root      12 Feb  8 07:43 [34m[1mhome(B[m[K
+lrwxrwxrwx   1 root   root       7 Feb  8 07:42 [36m[1mlib(B[m -> [34m[1musr/lib(B[m[K
+lrwxrwxrwx   1 root   root       9 Feb  8 07:42 [36m[1mlib32(B[m -> [34m[1musr/lib32(B[m[K
+lrwxrwxrwx   1 root   root       9 Feb  8 07:42 [36m[1mlib64(B[m -> [34m[1musr/lib64(B[m[K
+lrwxrwxrwx   1 root   root      10 Feb  8 07:42 [36m[1mlibx32(B[m -> [34m[1musr/libx32(B[m[K
+drwxr-xr-x   1 root   root       0 Feb  8 07:42 [34m[1mmedia(B[m[K
+drwxr-xr-x   1 root   root       0 Feb  8 07:42 [34m[1mmnt(B[m[K
+drwxr-xr-x   1 root   root       0 Feb  8 07:42 [34m[1mopt(B[m[K
+dr-xr-xr-x 239 nobody nogroup    0 Feb 10 23:46 [34m[1mproc(B[m[K
+drwx------   1 root   root      62 Feb  8 13:47 [34m[1mroot(B[m[K
+drwxr-xr-x  12 root   root     360 Feb 10 23:46 [34m[1mrun(B[m[K
+lrwxrwxrwx   1 root   root       8 Feb  8 07:42 [36m[1msbin(B[m -> [34m[1musr/sbin(B[m[K
+drwxr-xr-x   1 root   root       0 Feb  8 07:42 [34m[1msrv(B[m[K
+dr-xr-xr-x  13 nobody nogroup    0 Feb 10 23:46 [34m[1msys(B[m[K
+drwxrwxrwt   1 root   root     410 Feb 10 23:47 [30m[42mtmp[39m[49m[K
+drwxr-xr-x   1 root   root     102 Feb  8 07:42 [34m[1musr(B[m[K
+drwxr-xr-x   1 root   root      90 Feb  8 07:42 [34m[1mvar(B[m[K
+root@f4:~# ls -al /A/[K
+total 0[K
+drwxr-xr-x 1 root root  10 Feb 10 23:48 [34m[1m.(B[m[K
+drwxr-xr-x 1 root root 198 Feb 10 23:48 [34m[1m..(B[m[K
+-rw-r--r-- 1 root root   0 Feb 10 23:48 B.txt[K
+root@f4:~# [K[38;5;230m[48;5;239m[H[$5|demo]                                          0:0- 1:1*                                         [%18|0|root@f4: ~] (B[m[28;12H[?12l[?25h# Yetp, [K[K[K[Kp, looks good.[2;28r[28;1H
+root@f4:~# [1;28r[28;12H[?25l[2;1Hdrwxr-xr-x   1 root   root       0 Dec  5 14:39 [34m[1mboot(B[m[K
+drwxr-xr-x   8 root   root     480 Feb 10 23:46 [34m[1mdev(B[m[K
+drwxr-xr-x   1 root   root    2132 Feb  8 13:47 [34m[1metc(B[m[K
+drwxr-xr-x   1 root   root      12 Feb  8 07:43 [34m[1mhome(B[m[K
+lrwxrwxrwx   1 root   root       7 Feb  8 07:42 [36m[1mlib(B[m -> [34m[1musr/lib(B[m[K
+lrwxrwxrwx   1 root   root       9 Feb  8 07:42 [36m[1mlib32(B[m -> [34m[1musr/lib32(B[m[K
+lrwxrwxrwx   1 root   root       9 Feb  8 07:42 [36m[1mlib64(B[m -> [34m[1musr/lib64(B[m[K
+lrwxrwxrwx   1 root   root      10 Feb  8 07:42 [36m[1mlibx32(B[m -> [34m[1musr/libx32(B[m[K
+drwxr-xr-x   1 root   root       0 Feb  8 07:42 [34m[1mmedia(B[m[K
+drwxr-xr-x   1 root   root       0 Feb  8 07:42 [34m[1mmnt(B[m[K
+drwxr-xr-x   1 root   root       0 Feb  8 07:42 [34m[1mopt(B[m[K
+dr-xr-xr-x 239 nobody nogroup    0 Feb 10 23:46 [34m[1mproc(B[m[K
+drwx------   1 root   root      62 Feb  8 13:47 [34m[1mroot(B[m[K
+drwxr-xr-x  12 root   root     360 Feb 10 23:46 [34m[1mrun(B[m[K
+lrwxrwxrwx   1 root   root       8 Feb  8 07:42 [36m[1msbin(B[m -> [34m[1musr/sbin(B[m[K
+drwxr-xr-x   1 root   root       0 Feb  8 07:42 [34m[1msrv(B[m[K
+dr-xr-xr-x  13 nobody nogroup    0 Feb 10 23:46 [34m[1msys(B[m[K
+drwxrwxrwt   1 root   root     410 Feb 10 23:47 [30m[42mtmp[39m[49m[K
+drwxr-xr-x   1 root   root     102 Feb  8 07:42 [34m[1musr(B[m[K
+drwxr-xr-x   1 root   root      90 Feb  8 07:42 [34m[1mvar(B[m[K
+root@f4:~# ls -al /A/[K
+total 0[K
+drwxr-xr-x 1 root root  10 Feb 10 23:48 [34m[1m.(B[m[K
+drwxr-xr-x 1 root root 198 Feb 10 23:48 [34m[1m..(B[m[K
+-rw-r--r-- 1 root root   0 Feb 10 23:48 B.txt[K
+root@f4:~# # Yep, looks good.[K
+root@f4:~# [K[38;5;230m[48;5;239m[H[$5|demo]                                          0:0- 1:1*                                         [%18|0|root@f4: ~] (B[m[28;12H[?12l[?25h# Let's see whether the right thing happened when we look at these files[2;28r[28;1H
+[1;28r[28;1Hroot@f4:~# [?25l[2;1Hdrwxr-xr-x   8 root   root     480 Feb 10 23:46 [34m[1mdev(B[m[K
+drwxr-xr-x   1 root   root    2132 Feb  8 13:47 [34m[1metc(B[m[K
+drwxr-xr-x   1 root   root      12 Feb  8 07:43 [34m[1mhome(B[m[K
+lrwxrwxrwx   1 root   root       7 Feb  8 07:42 [36m[1mlib(B[m -> [34m[1musr/lib(B[m[K
+lrwxrwxrwx   1 root   root       9 Feb  8 07:42 [36m[1mlib32(B[m -> [34m[1musr/lib32(B[m[K
+lrwxrwxrwx   1 root   root       9 Feb  8 07:42 [36m[1mlib64(B[m -> [34m[1musr/lib64(B[m[K
+lrwxrwxrwx   1 root   root      10 Feb  8 07:42 [36m[1mlibx32(B[m -> [34m[1musr/libx32(B[m[K
+drwxr-xr-x   1 root   root       0 Feb  8 07:42 [34m[1mmedia(B[m[K
+drwxr-xr-x   1 root   root       0 Feb  8 07:42 [34m[1mmnt(B[m[K
+drwxr-xr-x   1 root   root       0 Feb  8 07:42 [34m[1mopt(B[m[K
+dr-xr-xr-x 239 nobody nogroup    0 Feb 10 23:46 [34m[1mproc(B[m[K
+drwx------   1 root   root      62 Feb  8 13:47 [34m[1mroot(B[m[K
+drwxr-xr-x  12 root   root     360 Feb 10 23:46 [34m[1mrun(B[m[K
+lrwxrwxrwx   1 root   root       8 Feb  8 07:42 [36m[1msbin(B[m -> [34m[1musr/sbin(B[m[K
+drwxr-xr-x   1 root   root       0 Feb  8 07:42 [34m[1msrv(B[m[K
+dr-xr-xr-x  13 nobody nogroup    0 Feb 10 23:46 [34m[1msys(B[m[K
+drwxrwxrwt   1 root   root     410 Feb 10 23:47 [30m[42mtmp[39m[49m[K
+drwxr-xr-x   1 root   root     102 Feb  8 07:42 [34m[1musr(B[m[K
+drwxr-xr-x   1 root   root      90 Feb  8 07:42 [34m[1mvar(B[m[K
+root@f4:~# ls -al /A/[K
+total 0[K
+drwxr-xr-x 1 root root  10 Feb 10 23:48 [34m[1m.(B[m[K
+drwxr-xr-x 1 root root 198 Feb 10 23:48 [34m[1m..(B[m[K
+-rw-r--r-- 1 root root   0 Feb 10 23:48 B.txt[K
+root@f4:~# # Yep, looks good.[K
+root@f4:~# # Let's see whether the right thing happened when we look at these files[K
+root@f4:~# [K[38;5;230m[48;5;239m[H[$5|demo]                                          0:0- 1:1*                                         [%18|0|root@f4: ~] (B[m[28;12H[?12l[?25h# from the host.[2;28r[28;1H
+root@f4:~# [1;28r[28;12H[?25l[2;1Hdrwxr-xr-x   1 root   root    2132 Feb  8 13:47 [34m[1metc(B[m[K
+drwxr-xr-x   1 root   root      12 Feb  8 07:43 [34m[1mhome(B[m[K
+lrwxrwxrwx   1 root   root       7 Feb  8 07:42 [36m[1mlib(B[m -> [34m[1musr/lib(B[m[K
+lrwxrwxrwx   1 root   root       9 Feb  8 07:42 [36m[1mlib32(B[m -> [34m[1musr/lib32(B[m[K
+lrwxrwxrwx   1 root   root       9 Feb  8 07:42 [36m[1mlib64(B[m -> [34m[1musr/lib64(B[m[K
+lrwxrwxrwx   1 root   root      10 Feb  8 07:42 [36m[1mlibx32(B[m -> [34m[1musr/libx32(B[m[K
+drwxr-xr-x   1 root   root       0 Feb  8 07:42 [34m[1mmedia(B[m[K
+drwxr-xr-x   1 root   root       0 Feb  8 07:42 [34m[1mmnt(B[m[K
+drwxr-xr-x   1 root   root       0 Feb  8 07:42 [34m[1mopt(B[m[K
+dr-xr-xr-x 239 nobody nogroup    0 Feb 10 23:46 [34m[1mproc(B[m[K
+drwx------   1 root   root      62 Feb  8 13:47 [34m[1mroot(B[m[K
+drwxr-xr-x  12 root   root     360 Feb 10 23:46 [34m[1mrun(B[m[K
+lrwxrwxrwx   1 root   root       8 Feb  8 07:42 [36m[1msbin(B[m -> [34m[1musr/sbin(B[m[K
+drwxr-xr-x   1 root   root       0 Feb  8 07:42 [34m[1msrv(B[m[K
+dr-xr-xr-x  13 nobody nogroup    0 Feb 10 23:46 [34m[1msys(B[m[K
+drwxrwxrwt   1 root   root     410 Feb 10 23:47 [30m[42mtmp[39m[49m[K
+drwxr-xr-x   1 root   root     102 Feb  8 07:42 [34m[1musr(B[m[K
+drwxr-xr-x   1 root   root      90 Feb  8 07:42 [34m[1mvar(B[m[K
+root@f4:~# ls -al /A/[K
+total 0[K
+drwxr-xr-x 1 root root  10 Feb 10 23:48 [34m[1m.(B[m[K
+drwxr-xr-x 1 root root 198 Feb 10 23:48 [34m[1m..(B[m[K
+-rw-r--r-- 1 root root   0 Feb 10 23:48 B.txt[K
+root@f4:~# # Yep, looks good.[K
+root@f4:~# # Let's see whether the right thing happened when we look at these files[K
+root@f4:~# # from the host.[K
+root@f4:~# [K[38;5;230m[48;5;239m[H[$5|demo]                                          0:0- 1:1*                                         [%18|0|root@f4: ~] (B[m[28;12H[?12l[?25hclear[2;28r[28;1H
+[1;28r[28;1H[2;28r[2;1H[J[1;28r[2;1Hroot@f4:~# [?25lroot@f4:~# [K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K[38;5;230m[48;5;239m[H[$5|demo]                                          0:0- 1:1*                                         [%18|0|root@f4: ~] (B[m[2;12H[?12l[?25hexit
+[32m[1mroot@e1-vm(B[m:[34m[1m~(B[m# [?25l[2;1Hroot@f4:~# exit[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# [K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K
+[K[38;5;230m[48;5;239m[H[$5|demo]                                        0:0- 1:1*                                        [%18|0|root@e1-vm: ~] (B[m[3;15H[?12l[?25hls -al /var/lib/lxd//[Kstorage-pools/default/containers/f4/rootfs/
+total 24
+drwxr-xr-x 1 300000 300000  198 Feb 10 23:48 [34m[1m.
+(B[md--x------ 1 300000 root     78 Feb  8 13:44 [34m[1m..
+(B[mdrwxr-xr-x 1 300000 300000   10 Feb 10 23:48 [34m[1mA
+(B[mdrwxr-xr-x 1 300000 300000    0 Feb 10 23:42 [34m[1mRANDOM_DIR
+(B[m-rw-r--r-- 1 300000 300000    0 Feb 10 23:42 RANDOM_FILE
+lrwxrwxrwx 1 300000 300000    7 Feb  8 07:42 [36m[1mbin(B[m -> [34m[1musr/bin
+(B[mdrwxr-xr-x 1 300000 300000    0 Dec  5 14:39 [34m[1mboot
+(B[mdrwxr-xr-x 1 300000 300000    0 Feb  8 07:49 [34m[1mdev
+(B[mdrwxr-xr-x 1 300000 300000 2132 Feb  8 13:47 [34m[1metc
+(B[mdrwxr-xr-x 1 300000 300000   12 Feb  8 07:43 [34m[1mhome
+(B[mlrwxrwxrwx 1 300000 300000    7 Feb  8 07:42 [36m[1mlib(B[m -> [34m[1musr/lib
+(B[mlrwxrwxrwx 1 300000 300000    9 Feb  8 07:42 [36m[1mlib32(B[m -> [34m[1musr/lib32
+(B[mlrwxrwxrwx 1 300000 300000    9 Feb  8 07:42 [36m[1mlib64(B[m -> [34m[1musr/lib64
+(B[mlrwxrwxrwx 1 300000 300000   10 Feb  8 07:42 [36m[1mlibx32(B[m -> [34m[1musr/libx32
+(B[mdrwxr-xr-x 1 300000 300000    0 Feb  8 07:42 [34m[1mmedia
+(B[mdrwxr-xr-x 1 300000 300000    0 Feb  8 07:42 [34m[1mmnt
+(B[mdrwxr-xr-x 1 300000 300000    0 Feb  8 07:42 [34m[1mopt
+(B[m[2;28r[3S[19ddrwxr-xr-x 1 300000 300000    0 Dec  5 14:39 [34m[1mproc
+(B[mdrwx------ 1 300000 300000   62 Feb  8 13:47 [34m[1mroot
+(B[mdrwxr-xr-x 1 300000 300000    0 Feb  8 07:44 [34m[1mrun
+(B[mlrwxrwxrwx 1 300000 300000    8 Feb  8 07:42 [36m[1msbin(B[m -> [34m[1musr/sbin
+(B[mdrwxr-xr-x 1 300000 300000    0 Feb  8 07:42 [34m[1msrv
+(B[mdrwxr-xr-x 1 300000 300000    0 Dec  5 14:39 [34m[1msys
+(B[mdrwxrwxrwt 1 300000 300000  410 Feb 10 23:47 [30m[42mtmp
+[39m[49mdrwxr-xr-x 1 300000 300000  102 Feb  8 07:42 [34m[1musr
+(B[mdrwxr-xr-x 1 300000 300000   90 Feb  8 07:42 [34m[1mvar[1;28r[28;1H(B[m[32m[1mroot@e1-vm(B[m:[34m[1m~(B[m# [?25l[2;1Hdrwxr-xr-x 1 300000 300000  198 Feb 10 23:48 [34m[1m.(B[m[K
+d--x------ 1 300000 root     78 Feb  8 13:44 [34m[1m..(B[m[K
+drwxr-xr-x 1 300000 300000   10 Feb 10 23:48 [34m[1mA(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb 10 23:42 [34m[1mRANDOM_DIR(B[m[K
+-rw-r--r-- 1 300000 300000    0 Feb 10 23:42 RANDOM_FILE[K
+lrwxrwxrwx 1 300000 300000    7 Feb  8 07:42 [36m[1mbin(B[m -> [34m[1musr/bin(B[m[K
+drwxr-xr-x 1 300000 300000    0 Dec  5 14:39 [34m[1mboot(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:49 [34m[1mdev(B[m[K
+drwxr-xr-x 1 300000 300000 2132 Feb  8 13:47 [34m[1metc(B[m[K
+drwxr-xr-x 1 300000 300000   12 Feb  8 07:43 [34m[1mhome(B[m[K
+lrwxrwxrwx 1 300000 300000    7 Feb  8 07:42 [36m[1mlib(B[m -> [34m[1musr/lib(B[m[K
+lrwxrwxrwx 1 300000 300000    9 Feb  8 07:42 [36m[1mlib32(B[m -> [34m[1musr/lib32(B[m[K
+lrwxrwxrwx 1 300000 300000    9 Feb  8 07:42 [36m[1mlib64(B[m -> [34m[1musr/lib64(B[m[K
+lrwxrwxrwx 1 300000 300000   10 Feb  8 07:42 [36m[1mlibx32(B[m -> [34m[1musr/libx32(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:42 [34m[1mmedia(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:42 [34m[1mmnt(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:42 [34m[1mopt(B[m[K
+drwxr-xr-x 1 300000 300000    0 Dec  5 14:39 [34m[1mproc(B[m[K
+drwx------ 1 300000 300000   62 Feb  8 13:47 [34m[1mroot(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:44 [34m[1mrun(B[m[K
+lrwxrwxrwx 1 300000 300000    8 Feb  8 07:42 [36m[1msbin(B[m -> [34m[1musr/sbin(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:42 [34m[1msrv(B[m[K
+drwxr-xr-x 1 300000 300000    0 Dec  5 14:39 [34m[1msys(B[m[K
+drwxrwxrwt 1 300000 300000  410 Feb 10 23:47 [30m[42mtmp[39m[49m[K
+drwxr-xr-x 1 300000 300000  102 Feb  8 07:42 [34m[1musr(B[m[K
+drwxr-xr-x 1 300000 300000   90 Feb  8 07:42 [34m[1mvar(B[m[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# [K[38;5;230m[48;5;239m[H[$5|demo]                                        0:0- 1:1*                                        [%18|0|root@e1-vm: ~] (B[m[28;15H[?12l[?25hls -al /var/lib/lxd/storage-pools/default/containers/f4/rootfs/A/[2;28r[28;1H
+[1;28r[28;1H[2;28r[28;1H
+[Atotal 0[1;28r[28;1H[2;28r[3S[25ddrwxr-xr-x 1 300000 300000  10 Feb 10 23:48 [34m[1m.
+(B[mdrwxr-xr-x 1 300000 300000 198 Feb 10 23:48 [34m[1m..
+(B[m-rw-r--r-- 1 300000 300000   0 Feb 10 23:48 B.txt[1;28r[28;1H[32m[1mroot@e1-vm(B[m:[34m[1m~(B[m# [?25l[2;1Hlrwxrwxrwx 1 300000 300000    7 Feb  8 07:42 [36m[1mbin(B[m -> [34m[1musr/bin(B[m[K
+drwxr-xr-x 1 300000 300000    0 Dec  5 14:39 [34m[1mboot(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:49 [34m[1mdev(B[m[K
+drwxr-xr-x 1 300000 300000 2132 Feb  8 13:47 [34m[1metc(B[m[K
+drwxr-xr-x 1 300000 300000   12 Feb  8 07:43 [34m[1mhome(B[m[K
+lrwxrwxrwx 1 300000 300000    7 Feb  8 07:42 [36m[1mlib(B[m -> [34m[1musr/lib(B[m[K
+lrwxrwxrwx 1 300000 300000    9 Feb  8 07:42 [36m[1mlib32(B[m -> [34m[1musr/lib32(B[m[K
+lrwxrwxrwx 1 300000 300000    9 Feb  8 07:42 [36m[1mlib64(B[m -> [34m[1musr/lib64(B[m[K
+lrwxrwxrwx 1 300000 300000   10 Feb  8 07:42 [36m[1mlibx32(B[m -> [34m[1musr/libx32(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:42 [34m[1mmedia(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:42 [34m[1mmnt(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:42 [34m[1mopt(B[m[K
+drwxr-xr-x 1 300000 300000    0 Dec  5 14:39 [34m[1mproc(B[m[K
+drwx------ 1 300000 300000   62 Feb  8 13:47 [34m[1mroot(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:44 [34m[1mrun(B[m[K
+lrwxrwxrwx 1 300000 300000    8 Feb  8 07:42 [36m[1msbin(B[m -> [34m[1musr/sbin(B[m[K
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:42 [34m[1msrv(B[m[K
+drwxr-xr-x 1 300000 300000    0 Dec  5 14:39 [34m[1msys(B[m[K
+drwxrwxrwt 1 300000 300000  410 Feb 10 23:47 [30m[42mtmp[39m[49m[K
+drwxr-xr-x 1 300000 300000  102 Feb  8 07:42 [34m[1musr(B[m[K
+drwxr-xr-x 1 300000 300000   90 Feb  8 07:42 [34m[1mvar(B[m[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# ls -al /var/lib/lxd/storage-pools/default/containers/f4/rootfs/A/[K
+total 0[K
+drwxr-xr-x 1 300000 300000  10 Feb 10 23:48 [34m[1m.(B[m[K
+drwxr-xr-x 1 300000 300000 198 Feb 10 23:48 [34m[1m..(B[m[K
+-rw-r--r-- 1 300000 300000   0 Feb 10 23:48 B.txt[K[32m[1m
+root@e1-vm(B[m:[34m[1m~(B[m# [K[38;5;230m[48;5;239m[H[$5|demo]                                        0:0- 1:1*                                        [%18|0|root@e1-vm: ~] (B[m[28;15H[?12l[?25h# Yep, looks good to.[2;28r[28;1H
+[1;28r[28;1H[32m[1mroot@e1-vm(B[m:[34m[1m~(B[m# [1;28r(B[m[?1l>[H[2J]112[?12l[?25h[?1000l[?1002l[?1006l[?1005l[detached (from session demo)]
+[0;32m[0m[1;34mbrauner[1;37m@[1;33mwittgenstein[1;37m|[1;33m~/src/git/cground/shiftfs_fsid_perf[1;32m[1;37m|[1;36mgithub-master %=
+[0m[1;34m>[0m[0;32m[0m exit
+
+Script done on 2020-02-12 12:44:27+01:00 [COMMAND_EXIT_CODE="0"]

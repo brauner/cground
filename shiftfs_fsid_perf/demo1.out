@@ -1,0 +1,87 @@
+brauner@wittgenstein|~/src/git/cground/shiftfs_fsid_perf|github-master %<>
+> asciinema cat ./demo1.play
+root@e1-vm:~# # I've created a container that has the on-disk mapping
+root@e1-vm:~# # 0 300000 100000
+root@e1-vm:~# ls -al /var/lib/lxd/storage-pools/default/containers/f4/rootfs/
+total 24
+drwxr-xr-x 1 300000 300000  196 Feb 10 23:42 .
+d--x------ 1 root   root     78 Feb  8 13:44 ..
+drwxr-xr-x 1 300000 300000    0 Feb 10 23:42 RANDOM_DIR
+-rw-r--r-- 1 300000 300000    0 Feb 10 23:42 RANDOM_FILE
+lrwxrwxrwx 1 300000 300000    7 Feb  8 07:42 bin -> usr/bin
+drwxr-xr-x 1 300000 300000    0 Dec  5 14:39 boot
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:49 dev
+drwxr-xr-x 1 300000 300000 2132 Feb  8 13:47 etc
+drwxr-xr-x 1 300000 300000   12 Feb  8 07:43 home
+root@f4:~# cat /proc/self/uid_map
+         0     165536      65536
+root@f4:~# cat /proc/self/gid_map
+         0     165536      65536
+root@f4:~# # Now let's look at the fsid mappings.
+root@f4:~# cat /proc/self/fsuid_map
+         0     300000     100000
+root@f4:~# cat /proc/self/fsgid_map
+         0     300000     100000
+root@f4:~# # Let's verify that the container's rootfs is readable and writable for us.
+root@f4:~# ls -al
+total 12
+drwx------ 1 root root   62 Feb  8 13:47 .
+drwxr-xr-x 1 root root  196 Feb 10 23:42 ..
+-rw------- 1 root root  983 Feb 10 23:43 .bash_history
+-rw-r--r-- 1 root root 3106 Dec  5 14:39 .bashrc
+-rw-r--r-- 1 root root  161 Dec  5 14:39 .profile
+-rw-r--r-- 1 root root    0 Feb  8 13:47 aaa
+root@f4:~# ls -al /
+total 24
+drwxr-xr-x   1 root   root     196 Feb 10 23:42 .
+root@f4:~# mkdir /A
+root@f4:~# touch /A/B.txt
+root@f4:~# # Verify that ownership is correct from inside the container.
+root@f4:~# ls -al /
+total 24
+drwxr-xr-x   1 root   root     198 Feb 10 23:48 .
+drwxr-xr-x   1 root   root     198 Feb 10 23:48 ..
+drwxr-xr-x   1 root   root      10 Feb 10 23:48 A
+drwxr-xr-x   1 root   root       0 Feb 10 23:42 RANDOM_DIR
+-rw-r--r--   1 root   root       0 Feb 10 23:42 RANDOM_FILE
+lrwxrwxrwx   1 root   root       7 Feb  8 07:42 bin -> usr/bin
+drwxr-xr-x   1 root   root       0 Dec  5 14:39 boot
+drwxr-xr-x   8 root   root     480 Feb 10 23:46 dev
+drwxr-xr-x   1 root   root    2132 Feb  8 13:47 etc
+root@f4:~# exit
+root@e1-vm:~# ls -al /var/lib/lxd/storage-pools/default/containers/f4/rootfs/
+total 24
+drwxr-xr-x 1 300000 300000  198 Feb 10 23:48 .
+d--x------ 1 300000 root     78 Feb  8 13:44 ..
+drwxr-xr-x 1 300000 300000   10 Feb 10 23:48 A
+drwxr-xr-x 1 300000 300000    0 Feb 10 23:42 RANDOM_DIR
+-rw-r--r-- 1 300000 300000    0 Feb 10 23:42 RANDOM_FILE
+lrwxrwxrwx 1 300000 300000    7 Feb  8 07:42 bin -> usr/bin
+drwxr-xr-x 1 300000 300000    0 Dec  5 14:39 boot
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:49 dev
+drwxr-xr-x 1 300000 300000 2132 Feb  8 13:47 etc
+drwxr-xr-x 1 300000 300000   12 Feb  8 07:43 home
+lrwxrwxrwx 1 300000 300000    7 Feb  8 07:42 lib -> usr/lib
+lrwxrwxrwx 1 300000 300000    9 Feb  8 07:42 lib32 -> usr/lib32
+lrwxrwxrwx 1 300000 300000    9 Feb  8 07:42 lib64 -> usr/lib64
+lrwxrwxrwx 1 300000 300000   10 Feb  8 07:42 libx32 -> usr/libx32
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:42 media
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:42 mnt
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:42 opt
+drwxr-xr-x 1 300000 300000    0 Dec  5 14:39 proc
+drwx------ 1 300000 300000   62 Feb  8 13:47 root
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:44 run
+lrwxrwxrwx 1 300000 300000    8 Feb  8 07:42 sbin -> usr/sbin
+drwxr-xr-x 1 300000 300000    0 Feb  8 07:42 srv
+drwxr-xr-x 1 300000 300000    0 Dec  5 14:39 sys
+drwxrwxrwt 1 300000 300000  410 Feb 10 23:47 tmp
+drwxr-xr-x 1 300000 300000  102 Feb  8 07:42 usr
+drwxr-xr-x 1 300000 300000   90 Feb  8 07:42 var
+root@e1-vm:~# ls -al /var/lib/lxd/storage-pools/default/containers/f4/rootfs/A/
+total 0
+drwxr-xr-x 1 300000 300000  10 Feb 10 23:48 .
+drwxr-xr-x 1 300000 300000 198 Feb 10 23:48 ..
+-rw-r--r-- 1 300000 300000   0 Feb 10 23:48 B.txt
+root@e1-vm:~# # Yep, looks good to.
+root@e1-vm:~#
+[detached (from session demo)]

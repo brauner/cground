@@ -1,0 +1,37 @@
+# I've created a container that has the on disk-mapping
+# 0 300000 100000.
+ls -al /var/lib/lxd/storage-pools/default/containers/f4/rootfs/
+
+# We will set the security.idmap.isolated property on the container.
+# This will tell LXD to assign a random id mapping to the container.
+lxc config set f4 security.idmap.isolated true
+
+# When we start this container LXD will now set up a random id mapping.
+# LXD will also take care to setup an fsid mapping that matches
+# the on-disk mapping.
+lxc start f4
+
+# Let's enter the container and look at the id mappings.
+lxc exec f4 bash
+
+cat /proc/self/uid_map
+cat /proc/self/gid_map
+
+# Now let's look at the fsid mappings.
+cat /proc/self/fsuid_map
+cat /proc/self/fsgid_map
+
+# Let's verify that the container's rootfs is readable and writable for us.
+ls -al 
+ls -al /
+
+# Let's create a directory and file in /
+mkdir /RANDOM_DIR
+touch /RANDOM_FILE
+
+# Verify that permissions are sane.
+ls -al /
+
+# Let's see whether the right thing happened when we look at these files
+# from the host.
+ls -al /var/lib/lxd/storage-pools/default/containers/f4/rootfs/

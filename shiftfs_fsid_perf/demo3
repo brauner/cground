@@ -1,0 +1,51 @@
+# We want to share dedicated storage with all three containers.
+# This is often used when e.g. sharing large datasets amongs containers
+# that perform calculations and write back results to the shared storage.
+
+# For extra security we want all containers to have different id mappings.
+# To this end we set the security.idmap.isolated property.
+
+lxc profile set default security.idmap.isolated true
+
+# Now we launch tree containers. All of them will have isolated id mappings:
+
+lxc launch images:ubuntu/focal f1
+lxc launch images:fedora/31 fed1
+lxc launch images:opensuse/tumbleweed o1
+
+# Let's verify that they all have the same id mapping:
+
+lxc shell f1
+lxc exec f1 -- cat /proc/self/{uid,gid}_map
+lxc exec fed1 -- cat /proc/self/{uid,gid}_map
+lxc exec o1 -- cat /proc/self/{uid,gid}_map
+
+# But they should all have the same fsid map
+
+lxc exec f1 -- cat /proc/self/fs{uid,gid}_map
+lxc exec fed1 -- cat /proc/self/fs{uid,gid}_map
+lxc exec o1 -- cat /proc/self/fs{uid,gid}_map
+
+# Now we want to share a git repository between all three containers.
+ls -al /srv/qemu/
+lxc profile device add f1 shared-storage disk source=/srv/qemu path=/opt/qemu
+
+# The fsid mappings will take care that the repository has correct permissions
+# in all three containers even though they all have isolated id mappings.
+lxc shell f1
+ls -al /opt/qemu
+
+lxc shell fed1
+ls -al /opt/qemu
+
+lxc shell o1
+ls -al /opt/qemu
+
+# It's also writable for all three containers:
+lxc exec f1 -- touch /opt/qemu/f1-file
+lxc exec fed1 -- touch /opt/qemu/fed1-file
+lxc exec o1 -- touch /opt/qemu/o1-file
+
+# And the fsid mappings will take care that all those files have the expected
+# permissions on the host:
+ls -al /srv/qemu/{f1,fed1,o1}-file

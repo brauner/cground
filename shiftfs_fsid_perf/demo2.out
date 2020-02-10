@@ -1,0 +1,110 @@
+root@e1-vm:~# # Setting up a container runtime without fsid mappings.
+root@e1-vm:~#
+root@e1-vm:~# # The current status quo is that fsid mappings are always identical to id mappings.
+root@e1-vm:~# # This behavior is still the same even after the introduction of fsid mappings.
+root@e1-vm:~# # Let's show this:
+root@e1-vm:~# lxc launch images:fedora/31 fed1
+Creating fed1
+Starting fed1
+root@e1-vm:~# lxc exec fed1 bash
+[root@fed1 ~]# cat /proc/self/uid_map
+         0     100000  100000000
+[root@fed1 ~]# cat /proc/self/gid_map
+         0     100000  100000000
+[root@fed1 ~]# cat /proc/self/fsuid_map
+[root@fed1 ~]# cat /proc/self/fsgid_map
+[root@fed1 ~]# # The rootfs is mapped to the id mapping specified and behaves just like it would have
+[root@fed1 ~]# # before the introduction of fsid mappings.
+[root@fed1 ~]# ls -al
+total 12
+dr-xr-x--- 1 root root  64 Feb 10 20:34 .
+dr-xr-xr-x 1 root root 176 Feb 11 00:16 ..
+-rw-r--r-- 1 root root  18 Feb 10 20:34 .bash_logout
+-rw-r--r-- 1 root root 141 Feb 10 20:34 .bash_profile
+-rw-r--r-- 1 root root 376 Feb 10 20:34 .bashrc
+[root@fed1 ~]# ls -al /
+total 16
+dr-xr-xr-x   1 root   root    176 Feb 11 00:16 .
+dr-xr-xr-x   1 root   root    176 Feb 11 00:16 ..
+-rw-r--r--   1 root   root      0 Feb 11 00:16 .autorelabel
+lrwxrwxrwx   1 root   root      7 Jul 25  2019 bin -> usr/bin
+dr-xr-xr-x   1 root   root      0 Jul 25  2019 boot
+drwxr-xr-x   8 root   root    480 Feb 11 00:16 dev
+drwxr-xr-x   1 root   root   2086 Feb 11 00:16 etc
+drwxr-xr-x   1 root   root      0 Jul 25  2019 home
+lrwxrwxrwx   1 root   root      7 Jul 25  2019 lib -> usr/lib
+lrwxrwxrwx   1 root   root      9 Jul 25  2019 lib64 -> usr/lib64
+drwx------   1 root   root      0 Feb 10 05:47 lost+found
+drwxr-xr-x   1 root   root      0 Jul 25  2019 media
+drwxr-xr-x   1 root   root      0 Jul 25  2019 mnt
+drwxr-xr-x   1 root   root      0 Jul 25  2019 opt
+dr-xr-xr-x 242 nobody nobody    0 Feb 11 00:16 proc
+dr-xr-x---   1 root   root     64 Feb 10 20:34 root
+drwxr-xr-x  16 root   root    380 Feb 11 00:16 run
+lrwxrwxrwx   1 root   root      8 Jul 25  2019 sbin -> usr/sbin
+drwxr-xr-x   1 root   root      0 Jul 25  2019 srv
+dr-xr-xr-x  13 nobody nobody    0 Feb 11 00:16 sys
+drwxrwxrwt   9 root   root    180 Feb 11 00:17 tmp
+drwxr-xr-x   1 root   root    100 Feb 10 05:47 usr
+drwxr-xr-x   1 root   root    170 Feb 11 00:16 var
+[root@fed1 ~]# touch /AAAA
+[root@fed1 ~]# mkdir /BBBB
+[root@fed1 ~]# ls -al /
+total 16
+dr-xr-xr-x   1 root   root    192 Feb 11 00:17 .
+dr-xr-xr-x   1 root   root    192 Feb 11 00:17 ..
+-rw-r--r--   1 root   root      0 Feb 11 00:16 .autorelabel
+-rw-r--r--   1 root   root      0 Feb 11 00:17 AAAA
+drwxr-xr-x   1 root   root      0 Feb 11 00:17 BBBB
+lrwxrwxrwx   1 root   root      7 Jul 25  2019 bin -> usr/bin
+dr-xr-xr-x   1 root   root      0 Jul 25  2019 boot
+drwxr-xr-x   8 root   root    480 Feb 11 00:16 dev
+drwxr-xr-x   1 root   root   2086 Feb 11 00:16 etc
+drwxr-xr-x   1 root   root      0 Jul 25  2019 home
+lrwxrwxrwx   1 root   root      7 Jul 25  2019 lib -> usr/lib
+lrwxrwxrwx   1 root   root      9 Jul 25  2019 lib64 -> usr/lib64
+drwx------   1 root   root      0 Feb 10 05:47 lost+found
+drwxr-xr-x   1 root   root      0 Jul 25  2019 media
+drwxr-xr-x   1 root   root      0 Jul 25  2019 mnt
+drwxr-xr-x   1 root   root      0 Jul 25  2019 opt
+dr-xr-xr-x 242 nobody nobody    0 Feb 11 00:16 proc
+dr-xr-x---   1 root   root     64 Feb 10 20:34 root
+drwxr-xr-x  16 root   root    380 Feb 11 00:16 run
+lrwxrwxrwx   1 root   root      8 Jul 25  2019 sbin -> usr/sbin
+drwxr-xr-x   1 root   root      0 Jul 25  2019 srv
+dr-xr-xr-x  13 nobody nobody    0 Feb 11 00:16 sys
+drwxrwxrwt   9 root   root    180 Feb 11 00:17 tmp
+drwxr-xr-x   1 root   root    100 Feb 10 05:47 usr
+drwxr-xr-x   1 root   root    170 Feb 11 00:16 var
+[root@fed1 ~]# exit
+root@e1-vm:~# ls -al /var/lib/lxd/storage-pools/default/containers/fed1/rootfs/
+total 16
+dr-xr-xr-x 1 100000 100000  192 Feb 11 00:17 .
+[$5|demo]                                        0:0- 1:1*                                        [%18|0|root@e1-vm: ~]
+d--x------ 1 100000 root     78 Feb 11 00:16 ..
+-rw-r--r-- 1 100000 100000    0 Feb 11 00:16 .autorelabel
+-rw-r--r-- 1 100000 100000    0 Feb 11 00:17 AAAA
+drwxr-xr-x 1 100000 100000    0 Feb 11 00:17 BBBB
+lrwxrwxrwx 1 100000 100000    7 Jul 25  2019 bin -> usr/bin
+dr-xr-xr-x 1 100000 100000    0 Jul 25  2019 boot
+drwxr-xr-x 1 100000 100000    0 Feb 10 20:39 dev
+drwxr-xr-x 1 100000 100000 2086 Feb 11 00:16 etc
+drwxr-xr-x 1 100000 100000    0 Jul 25  2019 home
+lrwxrwxrwx 1 100000 100000    7 Jul 25  2019 lib -> usr/lib
+lrwxrwxrwx 1 100000 100000    9 Jul 25  2019 lib64 -> usr/lib64
+drwx------ 1 100000 100000    0 Feb 10 05:47 lost+found
+drwxr-xr-x 1 100000 100000    0 Jul 25  2019 media
+drwxr-xr-x 1 100000 100000    0 Jul 25  2019 mnt
+drwxr-xr-x 1 100000 100000    0 Jul 25  2019 opt
+drwxr-xr-x 1 100000 100000    0 Feb 10 05:47 proc
+dr-xr-x--- 1 100000 100000   90 Feb 11 00:17 root
+drwxr-xr-x 1 100000 100000  152 Feb 10 05:48 run
+lrwxrwxrwx 1 100000 100000    8 Jul 25  2019 sbin -> usr/sbin
+drwxr-xr-x 1 100000 100000    0 Jul 25  2019 srv
+drwxr-xr-x 1 100000 100000    0 Feb 10 05:47 sys
+drwxrwxrwt 1 100000 100000    0 Feb 10 20:33 tmp
+drwxr-xr-x 1 100000 100000  100 Feb 10 05:47 usr
+drwxr-xr-x 1 100000 100000  170 Feb 11 00:16 var
+root@e1-vm:~# # So container runtimes don't need to care about fsid mappings if they don't want
+root@e1-vm:~# # or need to.
+root@e1-vm:~#

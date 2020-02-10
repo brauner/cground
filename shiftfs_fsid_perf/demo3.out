@@ -1,0 +1,690 @@
+root@e1-vm:~# root@e1-vm:~# # We want to share dedictated storage with multiple containers.
+root@e1-vm:~# # This is often used when sharing large datasets among containers.
+root@e1-vm:~# # For example, when performing calculations and write back results to the shared storage.
+root@e1-vm:~# 
+root@e1-vm:~# # For extra security we want all containers to have different id mappings.
+root@e1-vm:~# # To this end we set the security.idmap.isolated property.
+root@e1-vm:~# 
+root@e1-vm:~# lxc profile set default security.idmap.isolated true
+root@e1-vm:~# 
+root@e1-vm:~# # Now we launch three containers. All of them will have isolated id mappings:
+root@e1-vm:~# lxc launch images:fedora/31 fed1
+Creating fed1
+Starting fed1
+root@e1-vm:~# lxc launch images:ubuntu/focal f1
+Creating f1
+Starting f1
+root@e1-vm:~# lxc launch images:opensuse/tumbleweed o1
+Creating o1
+Starting o1
+root@e1-vm:~# root@e1-vm:~# lxc list
++------+---------+-----------------------+-----------------------------------------------+-----------+-----------+
+| NAME |  STATE  |         IPV4          |                     IPV6                      |   TYPE    | SNAPSHOTS |
++------+---------+-----------------------+-----------------------------------------------+-----------+-----------+
+| f1   | RUNNING |                       | fd42:2f90:857a:b195:216:3eff:fe42:eae8 (eth0) | CONTAINER | 0         |
++------+---------+-----------------------+-----------------------------------------------+-----------+-----------+
+| fed1 | RUNNING | 10.178.168.145 (eth0) | fd42:2f90:857a:b195:216:3eff:feae:efe9 (eth0) | CONTAINER | 0         |
++------+---------+-----------------------+-----------------------------------------------+-----------+-----------+
+| o1   | RUNNING | 10.178.168.233 (eth0) | fd42:2f90:857a:b195:216:3eff:fe47:34fb (eth0) | CONTAINER | 0         |
++------+---------+-----------------------+-----------------------------------------------+-----------+-----------+
+root@e1-vm:~# root@e1-vm:~# # Let's verify that they all have the same id mapping:
+root@e1-vm:~# lxc exec f1 -- cat /proc/self/{uid,gid}_map
+         0     231072      65536
+         0     231072      65536
+root@e1-vm:~# lxc exec fed1 -- cat /proc/self/{uid,gid}_map
+         0     165536      65536
+         0     165536      65536
+root@e1-vm:~# lxc exec o1 -- cat /proc/self/{uid,gid}_map
+         0     296608      65536
+         0     296608      65536
+root@e1-vm:~# # Yep, that's true.
+root@e1-vm:~# # Let's verify that they all have the _same_ fsid mapping.
+root@e1-vm:~# lxc exec o1 -- cat /proc/self/fs{uid,gid}_map
+         0     300000     100000
+         0     300000     100000
+root@e1-vm:~# lxc exec f1 -- cat /proc/self/fs{uid,gid}_map
+         0     300000     100000
+         0     300000     100000
+root@e1-vm:~# lxc exec fed1 -- cat /proc/self/fs{uid,gid}_map
+         0     300000     100000
+         0     300000     100000
+root@e1-vm:~# # Yep, that's also true
+root@e1-vm:~# root@e1-vm:~# # Now we want to share a git repository between all three containers and have them write to it.
+root@e1-vm:~# ls -al /srv/qemu/
+total 2684
+drwxr-xr-x 53 300000 300000   4096 Feb 11 16:18 .
+drwxr-xr-x  3 root   root     4096 Feb 11 15:53 ..
+-rw-r--r--  1 300000 300000   1101 Feb 11 15:54 .cirrus.yml
+-rw-r--r--  1 300000 300000     75 Feb 11 15:54 .dir-locals.el
+-rw-r--r--  1 300000 300000    748 Feb 11 15:54 .editorconfig
+-rw-r--r--  1 300000 300000    220 Feb 11 15:54 .exrc
+-rw-r--r--  1 300000 300000    326 Feb 11 15:54 .gdbinit
+drwxr-xr-x  8 300000 300000   4096 Feb 11 15:54 .git
+-rw-r--r--  1 300000 300000   3136 Feb 11 15:54 .gitignore
+-rw-r--r--  1 300000 300000   1657 Feb 11 15:54 .gitlab-ci-edk2.yml
+drwxr-xr-x  3 300000 300000   4096 Feb 11 15:54 .gitlab-ci.d
+-rw-r--r--  1 300000 300000   3954 Feb 11 15:54 .gitlab-ci.yml
+-rw-r--r--  1 300000 300000   1945 Feb 11 15:54 .gitmodules
+-rw-r--r--  1 300000 300000   1650 Feb 11 15:54 .gitpublish
+-rw-r--r--  1 300000 300000   7362 Feb 11 15:54 .mailmap
+-rw-r--r--  1 300000 300000   8601 Feb 11 15:54 .patchew.yml
+-rw-r--r--  1 300000 300000    543 Feb 11 15:54 .readthedocs.yml
+-rw-r--r--  1 300000 300000   1309 Feb 11 15:54 .shippable.yml
+-rw-r--r--  1 300000 300000  17068 Feb 11 15:54 .travis.yml
+-rw-r--r--  1 300000 300000  21518 Feb 11 15:54 CODING_STYLE.rst
+-rw-r--r--  1 300000 300000  17992 Feb 11 15:54 COPYING
+-rw-r--r--  1 300000 300000  26530 Feb 11 15:54 COPYING.LIB
+-rw-r--r--  1 300000 300000  23143 Feb 11 15:54 Changelog
+-rw-r--r--  1 300000 300000    511 Feb 11 15:54 Kconfig.host
+-rw-r--r--  1 300000 300000   1177 Feb 11 15:54 LICENSE
+-rw-r--r--  1 300000 300000  61647 Feb 11 15:54 MAINTAINERS
+-rw-r--r--  1 300000 300000  45961 Feb 11 15:54 Makefile-rw-r--r--  1 300000 300000   6302 Feb 11 15:54 Makefile.objs
+-rw-r--r--  1 300000 300000   7514 Feb 11 15:54 Makefile.target
+-rw-r--r--  1 300000 300000   4936 Feb 11 15:54 README.rst-rw-r--r--  1 300000 300000      7 Feb 11 15:54 VERSION
+drwxr-xr-x  5 300000 300000   4096 Feb 11 15:54 accel
+-rw-r--r--  1 300000 300000   3235 Feb 11 15:54 arch_init.c
+drwxr-xr-x  2 300000 300000   4096 Feb 11 15:54 audio
+drwxr-xr-x  2 300000 300000   4096 Feb 11 15:54 authz
+drwxr-xr-x  2 300000 300000   4096 Feb 11 15:54 backends
+-rw-r--r--  1 300000 300000   3582 Feb 11 15:54 balloon.c
+drwxr-xr-x  2 300000 300000   4096 Feb 11 15:54 block
+-rw-r--r--  1 300000 300000 203847 Feb 11 15:54 block.c
+-rw-r--r--  1 300000 300000   6763 Feb 11 15:54 blockdev-nbd.c
+-rw-r--r--  1 300000 300000 143069 Feb 11 15:54 blockdev.c-rw-r--r--  1 300000 300000  15589 Feb 11 15:54 blockjob.c
+-rw-r--r--  1 300000 300000  11534 Feb 11 15:54 bootdevice.c
+drwxr-xr-x  9 300000 300000   4096 Feb 11 15:54 bsd-user
+drwxr-xr-x  2 300000 300000   4096 Feb 11 15:54 capstonedrwxr-xr-x  2 300000 300000   4096 Feb 11 15:54 chardev
+-rwxr-xr-x  1 300000 300000 215409 Feb 11 15:54 configure
+drwxr-xr-x 13 300000 300000   4096 Feb 11 15:54 contrib
+-rw-r--r--  1 300000 300000  10313 Feb 11 15:54 cpus-common.c-rw-r--r--  1 300000 300000  62673 Feb 11 15:54 cpus.c
+drwxr-xr-x  2 300000 300000   4096 Feb 11 15:54 crypto
+drwxr-xr-x  2 300000 300000   4096 Feb 11 15:54 default-configs-rw-r--r--  1 300000 300000   2615 Feb 11 15:54 device-hotplug.c
+-rw-r--r--  1 300000 300000  14904 Feb 11 15:54 device_tree.c
+drwxr-xr-x  3 300000 300000   4096 Feb 11 15:54 disas-rw-r--r--  1 300000 300000  21166 Feb 11 15:54 disas.c
+-rw-r--r--  1 300000 300000   8245 Feb 11 15:54 dma-helpers.c
+drwxr-xr-x  9 300000 300000   4096 Feb 11 15:54 docs
+drwxr-xr-x  2 300000 300000   4096 Feb 11 15:54 dtc
+drwxr-xr-x  2 300000 300000   4096 Feb 11 15:54 dump
+-rw-r--r--  1 300000 300000   3633 Feb 11 15:54 exec-vary.c
+-rw-r--r--  1 300000 300000 122924 Feb 11 15:54 exec.c
+drwxr-xr-x  2 300000 300000   4096 Feb 11 15:54 fpu
+drwxr-xr-x  2 300000 300000   4096 Feb 11 15:54 fsdev
+drwxr-xr-x  2 300000 300000   4096 Feb 11 15:54 gdb-xml
+-rw-r--r--  1 300000 300000  88419 Feb 11 15:54 gdbstub.c
+-rw-r--r--  1 300000 300000   1575 Feb 11 15:54 gitdm.config
+-rw-r--r--  1 300000 300000  20232 Feb 11 15:54 hmp-commands-info.hx
+-rw-r--r--  1 300000 300000  57257 Feb 11 15:54 hmp-commands.hx
+drwxr-xr-x 66 300000 300000   4096 Feb 11 15:54 hw
+drwxr-xr-x 24 300000 300000   4096 Feb 11 15:54 include
+drwxr-xr-x  2 300000 300000   4096 Feb 11 15:54 io-rw-r--r--  1 300000 300000   9173 Feb 11 15:54 ioport.c
+-rw-r--r--  1 300000 300000  11195 Feb 11 15:54 iothread.c
+-rw-r--r--  1 300000 300000   4675 Feb 11 15:54 job-qmp.c
+-rw-r--r--  1 300000 300000  24091 Feb 11 15:54 job.cdrwxr-xr-x  3 300000 300000   4096 Feb 11 15:54 libdecnumber
+drwxr-xr-x 11 300000 300000   4096 Feb 11 15:54 linux-headers
+drwxr-xr-x 25 300000 300000   4096 Feb 11 15:54 linux-user
+-rw-r--r--  1 300000 300000 102319 Feb 11 15:54 memory.c
+-rw-r--r--  1 300000 300000   3459 Feb 11 15:54 qemu-edid.c
+-rw-r--r--  1 300000 300000   4942 Feb 11 15:54 qemu-img-cmds.hx
+-rw-r--r--  1 300000 300000 152401 Feb 11 15:54 qemu-img.c
+-rw-r--r--  1 300000 300000  65566 Feb 11 15:54 qemu-io-cmds.c
+-rw-r--r--  1 300000 300000  18890 Feb 11 15:54 qemu-io.c
+-rw-r--r--  1 300000 300000   7528 Feb 11 15:54 qemu-keymap.c
+-rw-r--r--  1 300000 300000  35820 Feb 11 15:54 qemu-nbd.c
+-rw-r--r--  1 300000 300000   1118 Feb 11 15:54 qemu-option-trace.texi
+-rw-r--r--  1 300000 300000   1042 Feb 11 15:54 qemu-options-wrapper.h
+-rw-r--r--  1 300000 300000   1401 Feb 11 15:54 qemu-options.h
+-rw-r--r--  1 300000 300000 204778 Feb 11 15:54 qemu-options.hx
+-rw-r--r--  1 300000 300000  11672 Feb 11 15:54 qemu-seccomp.c
+-rw-r--r--  1 300000 300000   5466 Feb 11 15:54 qemu-tech.texi
+-rw-r--r--  1 300000 300000   7589 Feb 11 15:54 qemu.nsi
+-rw-r--r--  1 300000 300000   1795 Feb 11 15:54 qemu.sasl
+drwxr-xr-x  4 300000 300000   4096 Feb 11 15:54 qga
+drwxr-xr-x  2 300000 300000   4096 Feb 11 15:54 qobject
+drwxr-xr-x  2 300000 300000   4096 Feb 11 15:54 qom
+-rw-r--r--  1 300000 300000  22277 Feb 11 15:54 qtest.c
+drwxr-xr-x  2 300000 300000   4096 Feb 11 15:54 replay
+-rw-r--r--  1 300000 300000   2524 Feb 11 15:54 replication.c
+-rw-r--r--  1 300000 300000   5309 Feb 11 15:54 replication.h
+drwxr-xr-x 16 300000 300000   4096 Feb 11 15:54 roms
+-rw-r--r--  1 300000 300000  16533 Feb 11 15:54 rules.mak
+drwxr-xr-x 11 300000 300000   4096 Feb 11 15:54 scripts
+drwxr-xr-x  2 300000 300000   4096 Feb 11 15:54 scsi
+drwxr-xr-x  2 300000 300000   4096 Feb 11 15:54 slirpdrwxr-xr-x  2 300000 300000   4096 Feb 11 15:54 stubs
+drwxr-xr-x 23 300000 300000   4096 Feb 11 15:54 target
+drwxr-xr-x 11 300000 300000   4096 Feb 11 15:54 tcg
+drwxr-xr-x 22 300000 300000   4096 Feb 11 15:54 tests
+-rw-r--r--  1 300000 300000   9307 Feb 11 15:54 thunk.c
+drwxr-xr-x  3 300000 300000   4096 Feb 11 15:54 tools
+-rw-r--r--  1 300000 300000   5578 Feb 11 15:54 tpm.c
+drwxr-xr-x  2 300000 300000   4096 Feb 11 15:54 trace
+-rw-r--r--  1 300000 300000   7989 Feb 11 15:54 trace-events
+drwxr-xr-x  5 300000 300000   4096 Feb 11 15:54 uidrwxr-xr-x  2 300000 300000   4096 Feb 11 15:54 util
+-rw-r--r--  1 300000 300000    790 Feb 11 15:54 version.rc
+-rw-r--r--  1 300000 300000 135378 Feb 11 15:54 vl.croot@e1-vm:~# -rw-r--r--  1 300000 300000   1795 Feb 11 15:54 qemu.sasl
+drwxr-xr-x  4 300000 300000   4096 Feb 11 15:54 qga
+drwxr-xr-x  2 300000 300000   4096 Feb 11 15:54 qobject
+drwxr-xr-x  2 300000 300000   4096 Feb 11 15:54 qom
+-rw-r--r--  1 300000 300000  22277 Feb 11 15:54 qtest.c
+drwxr-xr-x  2 300000 300000   4096 Feb 11 15:54 replay
+-rw-r--r--  1 300000 300000   2524 Feb 11 15:54 replication.c
+-rw-r--r--  1 300000 300000   5309 Feb 11 15:54 replication.h
+drwxr-xr-x 16 300000 300000   4096 Feb 11 15:54 roms
+-rw-r--r--  1 300000 300000  16533 Feb 11 15:54 rules.mak
+drwxr-xr-x 11 300000 300000   4096 Feb 11 15:54 scripts
+drwxr-xr-x  2 300000 300000   4096 Feb 11 15:54 scsi
+drwxr-xr-x  2 300000 300000   4096 Feb 11 15:54 slirp
+drwxr-xr-x  2 300000 300000   4096 Feb 11 15:54 stubs
+drwxr-xr-x 23 300000 300000   4096 Feb 11 15:54 target
+drwxr-xr-x 11 300000 300000   4096 Feb 11 15:54 tcg
+drwxr-xr-x 22 300000 300000   4096 Feb 11 15:54 tests
+-rw-r--r--  1 300000 300000   9307 Feb 11 15:54 thunk.c
+drwxr-xr-x  3 300000 300000   4096 Feb 11 15:54 tools
+-rw-r--r--  1 300000 300000   5578 Feb 11 15:54 tpm.c
+drwxr-xr-x  2 300000 300000   4096 Feb 11 15:54 trace
+-rw-r--r--  1 300000 300000   7989 Feb 11 15:54 trace-events
+drwxr-xr-x  5 300000 300000   4096 Feb 11 15:54 ui
+drwxr-xr-x  2 300000 300000   4096 Feb 11 15:54 util
+-rw-r--r--  1 300000 300000    790 Feb 11 15:54 version.rc
+-rw-r--r--  1 300000 300000 135378 Feb 11 15:54 vl.c
+root@e1-vm:~# # This is the repository we want to share
+root@e1-vm:~# root@e1-vm:~# # The fsid mappings will take care that the repository has the right permissions in each container.
+root@e1-vm:~# # Let's hotplug the repository at /opt/qemu in the container, currently there's nothing
+root@e1-vm:~# lxc exec f1 -- ls -al /opt/
+total 0
+drwxr-xr-x 1 root root   0 Feb 11 16:19 .
+drwxr-xr-x 1 root root 154 Feb 11 15:11 ..
+root@e1-vm:~# lxc exec fed1 -- ls -al /opt/
+total 0
+drwxr-xr-x 1 root root   0 Feb 11 16:19 .
+dr-xr-xr-x 1 root root 152 Feb 11 15:11 ..
+root@e1-vm:~# lxc exec o1 -- ls -al /opt/
+total 0
+drwxr-xr-x 1 root root   0 Feb 11 16:19 .
+drwxr-xr-x 1 root root 136 Feb 11 15:11 ..
+root@e1-vm:~# lxc profile device add default shared-storage disk source=/srv/qemu path=/opt/qemu
+Device shared-storage added to default
+root@e1-vm:~# # This will have hotplugged the repository
+root@e1-vm:~# root@e1-vm:~# lxc exec o1 -- ls -al /opt/
+total 4
+drwxr-xr-x  1 root root    8 Feb 11 16:22 .
+drwxr-xr-x  1 root root  136 Feb 11 15:11 ..
+drwxr-xr-x 53 root root 4096 Feb 11 16:18 qemu
+root@e1-vm:~# lxc exec o1 -- ls -al /opt/qemu/
+-rw-r--r--  1 root root   1177 Feb 11 15:54 LICENSE
+-rw-r--r--  1 root root  61647 Feb 11 15:54 MAINTAINERS
+-rw-r--r--  1 root root  45961 Feb 11 15:54 Makefile
+-rw-r--r--  1 root root   6302 Feb 11 15:54 Makefile.objs
+-rw-r--r--  1 root root   7514 Feb 11 15:54 Makefile.target
+-rw-r--r--  1 root root   4936 Feb 11 15:54 README.rst
+-rw-r--r--  1 root root      7 Feb 11 15:54 VERSION
+drwxr-xr-x  5 root root   4096 Feb 11 15:54 accel
+-rw-r--r--  1 root root   3235 Feb 11 15:54 arch_init.c
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 audio
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 authz
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 backends
+-rw-r--r--  1 root root   3582 Feb 11 15:54 balloon.c
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 block
+-rw-r--r--  1 root root 203847 Feb 11 15:54 block.c
+-rw-r--r--  1 root root   6763 Feb 11 15:54 blockdev-nbd.c
+-rw-r--r--  1 root root 143069 Feb 11 15:54 blockdev.c
+-rw-r--r--  1 root root  15589 Feb 11 15:54 blockjob.c
+-rw-r--r--  1 root root  11534 Feb 11 15:54 bootdevice.c
+drwxr-xr-x  9 root root   4096 Feb 11 15:54 bsd-user
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 capstone
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 chardev
+-rwxr-xr-x  1 root root 215409 Feb 11 15:54 configure
+drwxr-xr-x 13 root root   4096 Feb 11 15:54 contrib
+-rw-r--r--  1 root root  10313 Feb 11 15:54 cpus-common.c
+-rw-r--r--  1 root root  62673 Feb 11 15:54 cpus.c
+-rw-r--r--  1 root root  93723 Feb 11 15:54 qemu-doc.texi
+-rw-r--r--  1 root root   3459 Feb 11 15:54 qemu-edid.c
+-rw-r--r--  1 root root   4942 Feb 11 15:54 qemu-img-cmds.hx
+-rw-r--r--  1 root root 152401 Feb 11 15:54 qemu-img.c
+-rw-r--r--  1 root root  65566 Feb 11 15:54 qemu-io-cmds.c
+-rw-r--r--  1 root root  18890 Feb 11 15:54 qemu-io.c
+-rw-r--r--  1 root root   7528 Feb 11 15:54 qemu-keymap.c
+-rw-r--r--  1 root root  35820 Feb 11 15:54 qemu-nbd.c
+-rw-r--r--  1 root root   1118 Feb 11 15:54 qemu-option-trace.texi
+-rw-r--r--  1 root root   1042 Feb 11 15:54 qemu-options-wrapper.h
+-rw-r--r--  1 root root   1401 Feb 11 15:54 qemu-options.h
+-rw-r--r--  1 root root 204778 Feb 11 15:54 qemu-options.hx
+-rw-r--r--  1 root root  11672 Feb 11 15:54 qemu-seccomp.c
+-rw-r--r--  1 root root   5466 Feb 11 15:54 qemu-tech.texi
+-rw-r--r--  1 root root   7589 Feb 11 15:54 qemu.nsi
+-rw-r--r--  1 root root   1795 Feb 11 15:54 qemu.sasl
+drwxr-xr-x  4 root root   4096 Feb 11 15:54 qga
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 qobject
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 qom
+-rw-r--r--  1 root root  22277 Feb 11 15:54 qtest.c
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 replay
+-rw-r--r--  1 root root   2524 Feb 11 15:54 replication.c
+-rw-r--r--  1 root root   5309 Feb 11 15:54 replication.h
+drwxr-xr-x 16 root root   4096 Feb 11 15:54 roms
+-rw-r--r--  1 root root  16533 Feb 11 15:54 rules.mak
+drwxr-xr-x 11 root root   4096 Feb 11 15:54 scripts
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 scsi
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 slirp
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 stubs
+drwxr-xr-x 23 root root   4096 Feb 11 15:54 target
+drwxr-xr-x 11 root root   4096 Feb 11 15:54 tcg
+drwxr-xr-x 22 root root   4096 Feb 11 15:54 tests
+-rw-r--r--  1 root root   9307 Feb 11 15:54 thunk.c
+drwxr-xr-x  3 root root   4096 Feb 11 15:54 tools
+-rw-r--r--  1 root root   5578 Feb 11 15:54 tpm.c
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 trace
+-rw-r--r--  1 root root   7989 Feb 11 15:54 trace-events
+drwxr-xr-x  5 root root   4096 Feb 11 15:54 ui
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 util
+-rw-r--r--  1 root root    790 Feb 11 15:54 version.rc
+-rw-r--r--  1 root root 135378 Feb 11 15:54 vl.c
+-rw-r--r--  1 root root   1795 Feb 11 15:54 qemu.sasl
+drwxr-xr-x  4 root root   4096 Feb 11 15:54 qga
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 qobject
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 qom
+-rw-r--r--  1 root root  22277 Feb 11 15:54 qtest.c
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 replay
+-rw-r--r--  1 root root   2524 Feb 11 15:54 replication.c
+-rw-r--r--  1 root root   5309 Feb 11 15:54 replication.h
+drwxr-xr-x 16 root root   4096 Feb 11 15:54 roms
+-rw-r--r--  1 root root  16533 Feb 11 15:54 rules.mak
+drwxr-xr-x 11 root root   4096 Feb 11 15:54 scripts
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 scsi
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 slirp
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 stubs
+drwxr-xr-x 23 root root   4096 Feb 11 15:54 target
+drwxr-xr-x 11 root root   4096 Feb 11 15:54 tcg
+drwxr-xr-x 22 root root   4096 Feb 11 15:54 tests
+-rw-r--r--  1 root root   9307 Feb 11 15:54 thunk.c
+drwxr-xr-x  3 root root   4096 Feb 11 15:54 tools
+-rw-r--r--  1 root root   5578 Feb 11 15:54 tpm.c
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 trace
+-rw-r--r--  1 root root   7989 Feb 11 15:54 trace-events
+drwxr-xr-x  5 root root   4096 Feb 11 15:54 ui
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 util
+-rw-r--r--  1 root root    790 Feb 11 15:54 version.rc
+-rw-r--r--  1 root root 135378 Feb 11 15:54 vl.c
+root@e1-vm:~# lxc exec f1 -- ls -al /opt/qemu/
+total 2680
+drwxr-xr-x 53 root root   4096 Feb 11 16:18 .
+drwxr-xr-x  1 root root      8 Feb 11 16:22 ..
+-rw-r--r--  1 root root   1101 Feb 11 15:54 .cirrus.yml
+-rw-r--r--  1 root root     75 Feb 11 15:54 .dir-locals.el
+-rw-r--r--  1 root root    748 Feb 11 15:54 .editorconfig
+-rw-r--r--  1 root root    220 Feb 11 15:54 .exrc
+-rw-r--r--  1 root root    326 Feb 11 15:54 .gdbinit
+drwxr-xr-x  8 root root   4096 Feb 11 15:54 .git
+-rw-r--r--  1 root root   3136 Feb 11 15:54 .gitignore
+-rw-r--r--  1 root root   1657 Feb 11 15:54 .gitlab-ci-edk2.yml
+drwxr-xr-x  3 root root   4096 Feb 11 15:54 .gitlab-ci.d
+-rw-r--r--  1 root root   3954 Feb 11 15:54 .gitlab-ci.yml
+-rw-r--r--  1 root root   1945 Feb 11 15:54 .gitmodules
+-rw-r--r--  1 root root   1650 Feb 11 15:54 .gitpublish
+-rw-r--r--  1 root root   7362 Feb 11 15:54 .mailmap
+-rw-r--r--  1 root root   8601 Feb 11 15:54 .patchew.yml
+-rw-r--r--  1 root root    543 Feb 11 15:54 .readthedocs.yml
+-rw-r--r--  1 root root   1309 Feb 11 15:54 .shippable.yml
+-rw-r--r--  1 root root  17068 Feb 11 15:54 .travis.yml
+-rw-r--r--  1 root root  21518 Feb 11 15:54 CODING_STYLE.rst
+-rw-r--r--  1 root root  17992 Feb 11 15:54 COPYING
+-rw-r--r--  1 root root  26530 Feb 11 15:54 COPYING.LIB
+-rw-r--r--  1 root root  23143 Feb 11 15:54 Changelog
+-rw-r--r--  1 root root    511 Feb 11 15:54 Kconfig.host
+-rw-r--r--  1 root root   1177 Feb 11 15:54 LICENSE
+-rw-r--r--  1 root root  61647 Feb 11 15:54 MAINTAINERS
+-rw-r--r--  1 root root  45961 Feb 11 15:54 Makefile
+-rw-r--r--  1 root root   6302 Feb 11 15:54 Makefile.objs
+-rw-r--r--  1 root root   7514 Feb 11 15:54 Makefile.target
+-rw-r--r--  1 root root   4936 Feb 11 15:54 README.rst
+-rw-r--r--  1 root root      7 Feb 11 15:54 VERSION
+drwxr-xr-x  5 root root   4096 Feb 11 15:54 accel
+-rw-r--r--  1 root root   3235 Feb 11 15:54 arch_init.c
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 audio
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 authz
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 backends
+-rw-r--r--  1 root root   3582 Feb 11 15:54 balloon.c
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 block
+-rw-r--r--  1 root root 203847 Feb 11 15:54 block.c
+-rw-r--r--  1 root root   6763 Feb 11 15:54 blockdev-nbd.c
+-rwxr-xr-x  1 root root 215409 Feb 11 15:54 configure
+drwxr-xr-x 13 root root   4096 Feb 11 15:54 contrib
+-rw-r--r--  1 root root  10313 Feb 11 15:54 cpus-common.c
+-rw-r--r--  1 root root  62673 Feb 11 15:54 cpus.c
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 crypto
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 default-configs
+-rw-r--r--  1 root root   2615 Feb 11 15:54 device-hotplug.c
+-rw-r--r--  1 root root  14904 Feb 11 15:54 device_tree.c
+drwxr-xr-x  3 root root   4096 Feb 11 15:54 disas
+-rw-r--r--  1 root root  21166 Feb 11 15:54 disas.c
+-rw-r--r--  1 root root   8245 Feb 11 15:54 dma-helpers.c
+drwxr-xr-x  9 root root   4096 Feb 11 15:54 docs
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 dtc
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 dump
+-rw-r--r--  1 root root   3633 Feb 11 15:54 exec-vary.c
+-rw-r--r--  1 root root 122924 Feb 11 15:54 exec.c
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 fpu
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 fsdev
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 gdb-xml
+-rw-r--r--  1 root root  88419 Feb 11 15:54 gdbstub.c
+-rw-r--r--  1 root root   1575 Feb 11 15:54 gitdm.config
+-rw-r--r--  1 root root  20232 Feb 11 15:54 hmp-commands-info.hx
+-rw-r--r--  1 root root  57257 Feb 11 15:54 hmp-commands.hx
+drwxr-xr-x 66 root root   4096 Feb 11 15:54 hw
+drwxr-xr-x 24 root root   4096 Feb 11 15:54 include
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 io
+-rw-r--r--  1 root root   9173 Feb 11 15:54 ioport.c
+-rw-r--r--  1 root root  11195 Feb 11 15:54 iothread.c
+-rw-r--r--  1 root root   4675 Feb 11 15:54 job-qmp.c
+-rw-r--r--  1 root root  24091 Feb 11 15:54 job.c
+drwxr-xr-x  3 root root   4096 Feb 11 15:54 libdecnumber
+drwxr-xr-x 11 root root   4096 Feb 11 15:54 linux-headers
+drwxr-xr-x 25 root root   4096 Feb 11 15:54 linux-user
+-rw-r--r--  1 root root 102319 Feb 11 15:54 memory.c
+-rw-r--r--  1 root root  15937 Feb 11 15:54 memory_ldst.inc.c
+-rw-r--r--  1 root root  10803 Feb 11 15:54 memory_mapping.c
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 migration
+-rw-r--r--  1 root root    113 Feb 11 15:54 module-common.c
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 monitor
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 nbd
+drwxr-xr-x  3 root root   4096 Feb 11 15:54 net
+-rw-r--r--  1 root root   8752 Feb 11 15:54 os-posix.c
+-rw-r--r--  1 root root   2411 Feb 11 15:54 os-win32.c
+drwxr-xr-x  6 root root   4096 Feb 11 15:54 pc-bios
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 plugins
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 po
+drwxr-xr-x  3 root root   4096 Feb 11 15:54 python
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 qapi
+-rw-r--r--  1 root root  27878 Feb 11 15:54 qdev-monitor.c
+-rw-r--r--  1 root root  12018 Feb 11 15:54 qemu-bridge-helper.c
+-rw-r--r--  1 root root  15976 Feb 11 15:54 qemu-deprecated.texi
+-rw-r--r--  1 root root  93723 Feb 11 15:54 qemu-doc.texi
+-rw-r--r--  1 root root  11672 Feb 11 15:54 qemu-seccomp.c
+-rw-r--r--  1 root root   5466 Feb 11 15:54 qemu-tech.texi
+-rw-r--r--  1 root root   7589 Feb 11 15:54 qemu.nsi
+-rw-r--r--  1 root root   1795 Feb 11 15:54 qemu.sasl
+drwxr-xr-x  4 root root   4096 Feb 11 15:54 qga
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 qobject
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 qom
+-rw-r--r--  1 root root  22277 Feb 11 15:54 qtest.c
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 replay
+-rw-r--r--  1 root root   2524 Feb 11 15:54 replication.c
+-rw-r--r--  1 root root   5309 Feb 11 15:54 replication.h
+drwxr-xr-x 16 root root   4096 Feb 11 15:54 roms
+-rw-r--r--  1 root root  16533 Feb 11 15:54 rules.mak
+drwxr-xr-x 11 root root   4096 Feb 11 15:54 scripts
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 scsi
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 slirp
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 stubs
+drwxr-xr-x 23 root root   4096 Feb 11 15:54 target
+drwxr-xr-x 11 root root   4096 Feb 11 15:54 tcg
+drwxr-xr-x 22 root root   4096 Feb 11 15:54 tests
+-rw-r--r--  1 root root   9307 Feb 11 15:54 thunk.c
+drwxr-xr-x  3 root root   4096 Feb 11 15:54 tools
+-rw-r--r--  1 root root   5578 Feb 11 15:54 tpm.c
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 trace
+-rw-r--r--  1 root root   7989 Feb 11 15:54 trace-events
+drwxr-xr-x  5 root root   4096 Feb 11 15:54 ui
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 util
+-rw-r--r--  1 root root    790 Feb 11 15:54 version.rc
+-rw-r--r--  1 root root 135378 Feb 11 15:54 vl.c
+-rw-r--r--  1 root root   1795 Feb 11 15:54 qemu.sasl
+drwxr-xr-x  4 root root   4096 Feb 11 15:54 qga
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 qobject
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 qom
+-rw-r--r--  1 root root  22277 Feb 11 15:54 qtest.c
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 replay
+-rw-r--r--  1 root root   2524 Feb 11 15:54 replication.c
+-rw-r--r--  1 root root   5309 Feb 11 15:54 replication.h
+drwxr-xr-x 16 root root   4096 Feb 11 15:54 roms
+-rw-r--r--  1 root root  16533 Feb 11 15:54 rules.mak
+drwxr-xr-x 11 root root   4096 Feb 11 15:54 scripts
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 scsi
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 slirp
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 stubs
+drwxr-xr-x 23 root root   4096 Feb 11 15:54 target
+drwxr-xr-x 11 root root   4096 Feb 11 15:54 tcg
+drwxr-xr-x 22 root root   4096 Feb 11 15:54 tests
+-rw-r--r--  1 root root   9307 Feb 11 15:54 thunk.c
+drwxr-xr-x  3 root root   4096 Feb 11 15:54 tools
+-rw-r--r--  1 root root   5578 Feb 11 15:54 tpm.c
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 trace
+-rw-r--r--  1 root root   7989 Feb 11 15:54 trace-events
+drwxr-xr-x  5 root root   4096 Feb 11 15:54 ui
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 util
+-rw-r--r--  1 root root    790 Feb 11 15:54 version.rc
+-rw-r--r--  1 root root 135378 Feb 11 15:54 vl.c
+root@e1-vm:~# lxc exec o1 -- ls -al /opt/qemu/
+total 2680
+drwxr-xr-x 53 root root   4096 Feb 11 16:18 .
+drwxr-xr-x  1 root root      8 Feb 11 16:22 ..
+-rw-r--r--  1 root root   1101 Feb 11 15:54 .cirrus.yml
+-rw-r--r--  1 root root     75 Feb 11 15:54 .dir-locals.el
+-rw-r--r--  1 root root    748 Feb 11 15:54 .editorconfig
+-rw-r--r--  1 root root    220 Feb 11 15:54 .exrc
+-rw-r--r--  1 root root    326 Feb 11 15:54 .gdbinit
+drwxr-xr-x  8 root root   4096 Feb 11 15:54 .git
+-rw-r--r--  1 root root   3136 Feb 11 15:54 .gitignore
+-rw-r--r--  1 root root   1657 Feb 11 15:54 .gitlab-ci-edk2.yml
+drwxr-xr-x  3 root root   4096 Feb 11 15:54 .gitlab-ci.d
+-rw-r--r--  1 root root   3954 Feb 11 15:54 .gitlab-ci.yml
+-rw-r--r--  1 root root   1945 Feb 11 15:54 .gitmodules
+-rw-r--r--  1 root root   1650 Feb 11 15:54 .gitpublish
+-rw-r--r--  1 root root   7362 Feb 11 15:54 .mailmap
+-rw-r--r--  1 root root   8601 Feb 11 15:54 .patchew.yml
+-rw-r--r--  1 root root    543 Feb 11 15:54 .readthedocs.yml
+-rw-r--r--  1 root root   1309 Feb 11 15:54 .shippable.yml
+-rw-r--r--  1 root root  17068 Feb 11 15:54 .travis.yml
+-rw-r--r--  1 root root  21518 Feb 11 15:54 CODING_STYLE.rst
+-rw-r--r--  1 root root  17992 Feb 11 15:54 COPYING
+-rw-r--r--  1 root root  26530 Feb 11 15:54 COPYING.LIB
+-rw-r--r--  1 root root  23143 Feb 11 15:54 Changelog
+-rw-r--r--  1 root root    511 Feb 11 15:54 Kconfig.host
+-rw-r--r--  1 root root   1177 Feb 11 15:54 LICENSE
+-rw-r--r--  1 root root  61647 Feb 11 15:54 MAINTAINERS
+-rw-r--r--  1 root root  45961 Feb 11 15:54 Makefile
+-rw-r--r--  1 root root   6302 Feb 11 15:54 Makefile.objs
+-rw-r--r--  1 root root   7514 Feb 11 15:54 Makefile.target
+-rw-r--r--  1 root root   4936 Feb 11 15:54 README.rst
+-rw-r--r--  1 root root      7 Feb 11 15:54 VERSION
+drwxr-xr-x  5 root root   4096 Feb 11 15:54 accel
+-rw-r--r--  1 root root   3235 Feb 11 15:54 arch_init.c
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 audio
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 authz
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 backends
+-rw-r--r--  1 root root   3582 Feb 11 15:54 balloon.c
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 block
+-rw-r--r--  1 root root 203847 Feb 11 15:54 block.c
+-rw-r--r--  1 root root   6763 Feb 11 15:54 blockdev-nbd.c
+-rw-r--r--  1 root root 143069 Feb 11 15:54 blockdev.c
+-rw-r--r--  1 root root  15589 Feb 11 15:54 blockjob.c
+-rw-r--r--  1 root root  11534 Feb 11 15:54 bootdevice.c
+drwxr-xr-x  9 root root   4096 Feb 11 15:54 bsd-user
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 capstone
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 chardev
+-rwxr-xr-x  1 root root 215409 Feb 11 15:54 configure
+drwxr-xr-x 13 root root   4096 Feb 11 15:54 contrib
+-rw-r--r--  1 root root  10313 Feb 11 15:54 cpus-common.c
+-rw-r--r--  1 root root  62673 Feb 11 15:54 cpus.c
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 crypto
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 default-configs
+-rw-r--r--  1 root root   2615 Feb 11 15:54 device-hotplug.c
+-rw-r--r--  1 root root  14904 Feb 11 15:54 device_tree.c
+drwxr-xr-x  3 root root   4096 Feb 11 15:54 disas
+-rw-r--r--  1 root root  21166 Feb 11 15:54 disas.c
+-rw-r--r--  1 root root    113 Feb 11 15:54 module-common.c
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 monitor
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 nbd
+drwxr-xr-x  3 root root   4096 Feb 11 15:54 net
+-rw-r--r--  1 root root   8752 Feb 11 15:54 os-posix.c
+-rw-r--r--  1 root root   2411 Feb 11 15:54 os-win32.c
+drwxr-xr-x  6 root root   4096 Feb 11 15:54 pc-bios
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 plugins
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 po
+drwxr-xr-x  3 root root   4096 Feb 11 15:54 python
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 qapi
+-rw-r--r--  1 root root  27878 Feb 11 15:54 qdev-monitor.c
+-rw-r--r--  1 root root  12018 Feb 11 15:54 qemu-bridge-helper.c
+-rw-r--r--  1 root root  15976 Feb 11 15:54 qemu-deprecated.texi
+-rw-r--r--  1 root root  93723 Feb 11 15:54 qemu-doc.texi
+-rw-r--r--  1 root root   3459 Feb 11 15:54 qemu-edid.c
+-rw-r--r--  1 root root   4942 Feb 11 15:54 qemu-img-cmds.hx
+-rw-r--r--  1 root root 152401 Feb 11 15:54 qemu-img.c
+-rw-r--r--  1 root root  65566 Feb 11 15:54 qemu-io-cmds.c
+-rw-r--r--  1 root root  18890 Feb 11 15:54 qemu-io.c
+-rw-r--r--  1 root root   7528 Feb 11 15:54 qemu-keymap.c
+-rw-r--r--  1 root root  35820 Feb 11 15:54 qemu-nbd.c
+-rw-r--r--  1 root root   1118 Feb 11 15:54 qemu-option-trace.texi
+-rw-r--r--  1 root root   1042 Feb 11 15:54 qemu-options-wrapper.h
+-rw-r--r--  1 root root   1401 Feb 11 15:54 qemu-options.h
+-rw-r--r--  1 root root 204778 Feb 11 15:54 qemu-options.h
+x-rw-r--r--  1 root root  11672 Feb 11 15:54 qemu-seccomp.c
+-rw-r--r--  1 root root   5466 Feb 11 15:54 qemu-tech.texi
+-rw-r--r--  1 root root   7589 Feb 11 15:54 qemu.nsi
+-rw-r--r--  1 root root   1795 Feb 11 15:54 qemu.sasl
+drwxr-xr-x  4 root root   4096 Feb 11 15:54 qga
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 qobject
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 qom
+-rw-r--r--  1 root root  22277 Feb 11 15:54 qtest.c
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 replay
+-rw-r--r--  1 root root   2524 Feb 11 15:54 replication.c
+-rw-r--r--  1 root root   5309 Feb 11 15:54 replication.h
+drwxr-xr-x 16 root root   4096 Feb 11 15:54 roms
+-rw-r--r--  1 root root  16533 Feb 11 15:54 rules.mak
+drwxr-xr-x 11 root root   4096 Feb 11 15:54 scripts
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 scsi
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 slirp
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 stubs
+drwxr-xr-x 23 root root   4096 Feb 11 15:54 target
+drwxr-xr-x 11 root root   4096 Feb 11 15:54 tcg
+drwxr-xr-x 22 root root   4096 Feb 11 15:54 tests
+-rw-r--r--  1 root root   9307 Feb 11 15:54 thunk.c
+drwxr-xr-x  3 root root   4096 Feb 11 15:54 tools
+-rw-r--r--  1 root root   5578 Feb 11 15:54 tpm.c
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 trace
+-rw-r--r--  1 root root   7989 Feb 11 15:54 trace-events
+drwxr-xr-x  5 root root   4096 Feb 11 15:54 ui
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 util
+-rw-r--r--  1 root root    790 Feb 11 15:54 version.rc
+-rw-r--r--  1 root root 135378 Feb 11 15:54 vl.c
+-rw-r--r--  1 root root   1795 Feb 11 15:54 qemu.sasl
+drwxr-xr-x  4 root root   4096 Feb 11 15:54 qga
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 qobject
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 qom
+-rw-r--r--  1 root root  22277 Feb 11 15:54 qtest.c
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 replay
+-rw-r--r--  1 root root   2524 Feb 11 15:54 replication.c
+-rw-r--r--  1 root root   5309 Feb 11 15:54 replication.h
+drwxr-xr-x 16 root root   4096 Feb 11 15:54 roms
+-rw-r--r--  1 root root  16533 Feb 11 15:54 rules.mak
+drwxr-xr-x 11 root root   4096 Feb 11 15:54 scripts
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 scsi
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 slirp
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 stubs
+drwxr-xr-x 23 root root   4096 Feb 11 15:54 target
+drwxr-xr-x 11 root root   4096 Feb 11 15:54 tcg
+drwxr-xr-x 22 root root   4096 Feb 11 15:54 tests
+-rw-r--r--  1 root root   9307 Feb 11 15:54 thunk.c
+drwxr-xr-x  3 root root   4096 Feb 11 15:54 tools
+-rw-r--r--  1 root root   5578 Feb 11 15:54 tpm.c
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 trace
+-rw-r--r--  1 root root   7989 Feb 11 15:54 trace-events
+drwxr-xr-x  5 root root   4096 Feb 11 15:54 ui
+drwxr-xr-x  2 root root   4096 Feb 11 15:54 util
+-rw-r--r--  1 root root    790 Feb 11 15:54 version.rc
+-rw-r--r--  1 root root 135378 Feb 11 15:54 vl.c
+root@e1-vm:~# root@e1-vm:~# # It's also writable for each container which is very important.
+root@e1-vm:~# lxc exec f1 -- touch /opt/qemu/f1-file
+root@e1-vm:~# lxc exec o1 -- touch /opt/qemu/o1-file
+root@e1-vm:~# lxc exec fed1 -- touch /opt/qemu/fed1-file
+root@e1-vm:~# root@e1-vm:~# lxc exec f1 -- stat /opt/qemu/f1-file
+  File: /opt/qemu/f1-file
+  Size: 0         Blocks: 0          IO Block: 4096   regular empty file
+Device: 801h/2049dInode: 92463       Links: 1
+Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)
+Access: 2020-02-11 16:23:50.762297361 +0000
+Modify: 2020-02-11 16:23:50.762297361 +0000
+Change: 2020-02-11 16:23:50.762297361 +0000
+ Birth: -
+root@e1-vm:~# lxc exec fed1 -- stat /opt/qemu/f1-file
+  File: /opt/qemu/f1-file
+  Size: 0         Blocks: 0          IO Block: 4096   regular empty file
+Device: 801h/2049dInode: 92463       Links: 1
+Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)
+Access: 2020-02-11 16:23:50.762297361 +0000
+Modify: 2020-02-11 16:23:50.762297361 +0000
+Change: 2020-02-11 16:23:50.762297361 +0000
+ Birth: 2020-02-11 16:23:41.866465463 +0000
+root@e1-vm:~# lxc exec fed1 -- stat /opt/qemu/fed1-file
+  File: /opt/qemu/fed1-file
+  Size: 0         Blocks: 0          IO Block: 4096   regular empty file
+Device: 801h/2049dInode: 92465       Links: 1
+Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)
+Access: 2020-02-11 16:24:05.386024764 +0000
+Modify: 2020-02-11 16:24:05.386024764 +0000
+Change: 2020-02-11 16:24:05.386024764 +0000
+ Birth: 2020-02-11 16:24:05.386024764 +0000
+root@e1-vm:~# lxc exec o1 -- stat /opt/qemu/o1-file
+  File: /opt/qemu/o1-file
+  Size: 0         Blocks: 0          IO Block: 4096   regular empty file
+Device: 801h/2049dInode: 92464       Links: 1
+Access: (0644/-rw-r--r--)  Uid: (    0/    root)   Gid: (    0/    root)
+Access: 2020-02-11 16:23:57.718167126 +0000
+Modify: 2020-02-11 16:23:57.718167126 +0000
+Change: 2020-02-11 16:23:57.718167126 +0000
+ Birth: 2020-02-11 16:23:57.718167126 +0000
+root@e1-vm:~# root@e1-vm:~# # And the fsid mappings will take care that all those files have the expected ownership
+root@e1-vm:~# # on the host.
+root@e1-vm:~# ls -al /srv/qemu/{f1,fed1,o1}-file
+-rw-r--r-- 1 300000 300000 0 Feb 11 16:23 /srv/qemu/f1-file
+-rw-r--r-- 1 300000 300000 0 Feb 11 16:24 /srv/qemu/fed1-file
+-rw-r--r-- 1 300000 300000 0 Feb 11 16:23 /srv/qemu/o1-file
+root@e1-vm:~# ls -a /srv/qemu/{f1,fed1,o1}-file
+  File: /srv/qemu/f1-file
+  Size: 0         Blocks: 0          IO Block: 4096   regular empty file
+Device: 801h/2049dInode: 92463       Links: 1
+Access: (0644/-rw-r--r--)  Uid: (300000/ UNKNOWN)   Gid: (300000/ UNKNOWN)
+Access: 2020-02-11 16:23:50.762297361 +0000
+Modify: 2020-02-11 16:23:50.762297361 +0000
+Change: 2020-02-11 16:23:50.762297361 +0000
+ Birth: -
+  File: /srv/qemu/fed1-file
+  Size: 0         Blocks: 0          IO Block: 4096   regular empty file
+Device: 801h/2049dInode: 92465       Links: 1
+Access: (0644/-rw-r--r--)  Uid: (300000/ UNKNOWN)   Gid: (300000/ UNKNOWN)
+Access: 2020-02-11 16:24:05.386024764 +0000
+Modify: 2020-02-11 16:24:05.386024764 +0000
+Change: 2020-02-11 16:24:05.386024764 +0000
+ Birth: -
+  File: /srv/qemu/o1-file
+  Size: 0         Blocks: 0          IO Block: 4096   regular empty file
+Device: 801h/2049dInode: 92464       Links: 1
+Access: (0644/-rw-r--r--)  Uid: (300000/ UNKNOWN)   Gid: (300000/ UNKNOWN)
+Access: 2020-02-11 16:23:57.718167126 +0000
+Modify: 2020-02-11 16:23:57.718167126 +0000
+Change: 2020-02-11 16:23:57.718167126 +0000
+ Birth: -root@e1-vm:~# -rw-r--r-- 1 300000 300000 0 Feb 11 16:23 /srv/qemu/o1-file
+root@e1-vm:~# stat /srv/qemu/{f1,fed1,o1}-file
+  File: /srv/qemu/f1-file
+  Size: 0         Blocks: 0          IO Block: 4096   regular empty file
+Device: 801h/2049dInode: 92463       Links: 1
+Access: (0644/-rw-r--r--)  Uid: (300000/ UNKNOWN)   Gid: (300000/ UNKNOWN)
+Access: 2020-02-11 16:23:50.762297361 +0000
+Modify: 2020-02-11 16:23:50.762297361 +0000
+Change: 2020-02-11 16:23:50.762297361 +0000
+ Birth: -
+  File: /srv/qemu/fed1-file
+  Size: 0         Blocks: 0          IO Block: 4096   regular empty file
+Device: 801h/2049dInode: 92465       Links: 1
+Access: (0644/-rw-r--r--)  Uid: (300000/ UNKNOWN)   Gid: (300000/ UNKNOWN)
+Access: 2020-02-11 16:24:05.386024764 +0000
+Modify: 2020-02-11 16:24:05.386024764 +0000
+Change: 2020-02-11 16:24:05.386024764 +0000
+ Birth: -
+  File: /srv/qemu/o1-file
+  Size: 0         Blocks: 0          IO Block: 4096   regular empty file
+Device: 801h/2049dInode: 92464       Links: 1
+Access: (0644/-rw-r--r--)  Uid: (300000/ UNKNOWN)   Gid: (300000/ UNKNOWN)
+Access: 2020-02-11 16:23:57.718167126 +0000
+Modify: 2020-02-11 16:23:57.718167126 +0000
+Change: 2020-02-11 16:23:57.718167126 +0000
+ Birth: -
+root@e1-vm:~# # That's it. This way we can share storage between containers with different id mappings.

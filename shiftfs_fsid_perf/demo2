@@ -1,0 +1,20 @@
+# Setting up a container without fsid mappings.
+
+# The current status quo before the fsid mappings patchset is that only id
+# mappings are setup.
+# The fsid mappings are simpli identical to the id mappings.
+# This is still the case whenever no fsid mappings are setup.
+# Let's show this:
+
+lxc launch images:fedora/31 fed1
+lxc exec fed1 bash
+cat /proc/self/uid_map
+cat /proc/self/gid_map
+cat /proc/self/fsuid_map
+cat /proc/self/fsgid_map
+
+exit
+
+ls -al /var/lib/lxd/storage-pools
+
+# So container runtimes don't need to care about fsid mappings.
